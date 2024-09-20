@@ -24,3 +24,5 @@
 // git config --global user.name SEU USUÁRIO DO GITHUG
 // git config --global user.email "SEU EMAIL"
 // Observe que a segunda configuração contém aspas no email.
+
+console.log(`Código novo`)
