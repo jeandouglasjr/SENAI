@@ -15,8 +15,10 @@
 // Obs 1: Considere que um saque só poderá ser realizado caso haja saldo suficiente;
 // Obs 2: Criar uma variável com um valor que represente o saldo inicial (500 por exemplo).
 
-let saldo = 500
-//Coletar dados
+// Declarar variáveis
+let valor, saldo = 500
+let operacao
+// Declarar variável e Coletar dados
 operacao = Number(prompt(`Qual operação será realizada?\n[1 - Saldo] [2 - Depósito] [3 - Saque]`))
 // Validar dados
 while (operacao < 1 || operacao > 3) {
