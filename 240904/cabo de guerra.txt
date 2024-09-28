@@ -1,0 +1,83 @@
+programa {
+  funcao inicio() {
+    //declarando variáveis
+    inteiro valor = 0, posicao = 0, linha1, linha2
+    //tamanho da linha para valor com 1 dígito
+    enquanto (posicao > -100 e posicao < 100) {
+      escreva("\nQual o valor?\n")
+      leia(valor)
+      se (valor < -100) {
+        valor = -100
+      }
+      senao se (valor > 100) {
+        valor = 100
+      }
+      posicao = posicao + valor
+      linha1 = -100
+      //posicao superior 1 digito [0,9]
+      se (posicao >=0 e posicao <= 9) {
+        escreva("+---------------------------------------------------------------------------------------------------------------------------+\n")
+        escreva("¦                                              CABO DE GUERRA: AZUL X VERMELO                                               ¦\n")
+        escreva("¦---------------------------------------------------------------------------------------------------------------------------¦\n")
+      }
+      //posicao superior 2 digitos [-9,-1]ou[10,99]
+      senao se ((posicao >= -9 e posicao <= -1) ou (posicao >= 10 e posicao <= 99)) {
+        escreva("+----------------------------------------------------------------------------------------------------------------------------+\n")
+        escreva("¦                                               CABO DE GUERRA: AZUL X VERMELO                                               ¦\n")
+        escreva("¦----------------------------------------------------------------------------------------------------------------------------¦\n")
+      }
+      //posicao superior 3 digitos [-99,-10]ou[100]
+      senao se ((posicao >= -99 e posicao <= -10) ou (posicao >= 100)) {
+        escreva("+-----------------------------------------------------------------------------------------------------------------------------+\n")
+        escreva("¦                                               CABO DE GUERRA: AZUL X VERMELO                                                ¦\n")
+        escreva("¦-----------------------------------------------------------------------------------------------------------------------------¦\n")
+      }
+      //posicao superior 4 digitos [-100]
+      senao {
+        escreva("+------------------------------------------------------------------------------------------------------------------------------+\n")
+        escreva("¦                                                CABO DE GUERRA: AZUL X VERMELO                                                ¦\n")
+        escreva("¦------------------------------------------------------------------------------------------------------------------------------¦\n")
+      }
+      escreva("¦ AZUL ¦ ")
+      //posição dentro do cabo de guerra
+      enquanto ((linha1 < posicao-1) e (linha1 <= 99)) {
+        linha1 = linha1 + 2
+        escreva(".")
+      }
+      escreva ("[", posicao, "]")
+      enquanto(linha1 < 100) {
+        linha1 = linha1 + 2
+        escreva(".")
+      }
+      //posicao inferior 1 digito [0,9]
+      se (posicao >= 0 e posicao <=9) {
+        escreva(" ¦ VERMELHO ¦\n")
+        escreva("+---------------------------------------------------------------------------------------------------------------------------+")
+      }
+      //posicao inferior 2 digitos [-9,-1]ou[10,99]
+      senao se ((posicao >= -9 e posicao <=-1) ou (posicao >= 10 e posicao <= 99)) {
+        escreva(" ¦ VERMELHO ¦\n")
+        escreva("+----------------------------------------------------------------------------------------------------------------------------+")
+      }
+      //posicao inferior 3 digitos [-99,-10]ou[100]
+      senao se ((posicao >= -99 e posicao <= -10) ou (posicao >= 100)) {
+        escreva(" ¦ VERMELHO ¦\n")
+        escreva("+-----------------------------------------------------------------------------------------------------------------------------+")
+      }
+      //posicao inferior 4 dígitos (-100)
+      senao {
+        escreva(" ¦ VERMELHO ¦\n")
+        escreva("+------------------------------------------------------------------------------------------------------------------------------+")
+      }
+    }
+    //descobrindo o ganhador
+    se (posicao > 0) {
+      //se o ganhador for maior que zero, ou seja, positivo
+      escreva("\nPosição: ", posicao, " (O VERMELHO é o vencedor!)")
+    }
+    senao {
+      //se o ganhador for menor que zero, ou seja, negativo
+      escreva("\nPosição: ", posicao, " (O AZUL é o vencedor!)")
+    }
+  }
+}
