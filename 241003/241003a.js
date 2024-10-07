@@ -15,10 +15,10 @@
 
 let nota = Number(prompt(`Qual a nota? [PARA SAIR DIGITE -1]`))
 let soma = Number(nota)
+let quantNotas = 0
 while(nota != -1){
     nota = Number(prompt(`Qual a nota? [PARA SAIR DIGITE -1]`))
-    if (nota != -1){
-        soma = (soma + nota)
-    }
-    console.log(`A soma atual é : ${soma}`)
+    if (nota != -1) soma += nota
+    quantNotas++
 }
+alert(`A média é: ${soma/quantNotas}`)
