@@ -11,8 +11,8 @@ let paisA = Number(80000)
 let paisB = Number(200000)
 let ano = Number(0)
 while(paisA <= paisB){
-    paisA = paisA + (paisA * 0.03)
-    paisB = paisB + (paisB * 0.015)
+    paisA = paisA * 1.03
+    paisB = paisB * 1.015
     ano++
-    console.log(`Ano: ${ano}\nPaís A: ${paisA}\nPaís B: ${paisB}`)
+    console.log(`Ano: ${ano}\nPaís A: ${paisA.toFixed(2)}\nPaís B: ${paisB.toFixed(2)}`)
 }
