@@ -5,7 +5,9 @@ listaNumeros[3] = 10
 console.log(listaNumeros)
 let i;
 for (i=0; i<10; i++){
-    listaNumeros.push(i)
+    if (i % 2 == 0){
+        listaNumeros.push(i)
+    }
 }
 listaNumeros[5]=15
 console.log(listaNumeros)
