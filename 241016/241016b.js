@@ -12,10 +12,9 @@
 // C. Calcule o total de votos nulos e o total de votos em branco;
 // D. Determine o candidato vencedor
 
-let candidatoA=0, candidatoB=0, candidatoC=0, brancos=0, nulos=0, soma=0
-let votos = Number(prompt(`QUAL O SEU VOTO?\n[1 - CANDIDATO A]\n[2 - CANDIDATO B]\n[3 - CANDIDATO C]\n[4 - BRANCO]\n[5 OU OUTROS - NULO]\n[0 - SAIR]`))
-
+let votos, candidatoA=0, candidatoB=0, candidatoC=0, brancos=0, nulos=0, soma=0
 while (votos != 0) {
+    votos = Number(prompt(`QUAL O SEU VOTO?\n[1 - CANDIDATO A]\n[2 - CANDIDATO B]\n[3 - CANDIDATO C]\n[4 - BRANCO]\n[5 OU OUTROS - NULO]\n[0 - SAIR]`))
     switch(votos){
         case 1:
             candidatoA = candidatoA + 1
@@ -33,7 +32,6 @@ while (votos != 0) {
             nulos = nulos + 1
             break
         }
-    votos = Number(prompt(`QUAL O SEU VOTO?\n[1 - CANDIDATO A]\n[2 - CANDIDATO B]\n[3 - CANDIDATO C]\n[4 - BRANCO]\n[5 OU OUTROS - NULO]\n[0 - SAIR]`))
 }
 soma = candidatoA + candidatoB + candidatoC + brancos + nulos
 if (candidatoA > candidatoB && candidatoA > candidatoC){
