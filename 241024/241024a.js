@@ -18,13 +18,14 @@ for (i = 0; i < quantidade; i++){
         pontos[i] = prompt(`Digite um número válido (positivo e maior que zero)!\nDigite o número de pontos da ${i+1}ª multa:`)
     }
 }
+let ponto
 for (i = 0; i < quantidade; i++){
     ponto = Number(pontos[i])
     soma = soma + ponto
 }
-if (ponto >= 21){
-    console.log(`PONTOS: ${soma}\nVOCÊ ESTÁ IRREGULAR.`)
+if (soma < 21){
+    console.log(`PONTOS: ${soma}\nVOCÊ ESTÁ REGULAR.`)
 }
 else {
-    console.log(`PONTOS: ${soma}\nVOCÊ ESTÁ REGULAR.`)
+    console.log(`PONTOS: ${soma}\nVOCÊ ESTÁ IRREGULAR.`)
 }
