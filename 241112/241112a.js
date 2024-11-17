@@ -1,8 +1,8 @@
 let listaNumero = [];
-let digitado =0
+let digitado = 0
 let atual;
 let num = prompt("Digite quantos números queres digitar")
-for(let i=0;i<num;i++){
+for(let i = 0;i < num; i++){
     digitado = prompt("Digite o número")
     listaNumero.push(digitado)
 }
