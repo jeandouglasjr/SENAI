@@ -51,15 +51,15 @@ console.log(`Exercício 4 - O aluno está ${resultado}`)
 
 if (media >= 7 && media <= 10) {
     resultado = 'aprovado'
-    console.log(`Exercício 5 - ${resultado}`)
+    console.log(`Exercício 5 - O aluno está ${resultado}`)
 }
 else if (media >= 3 && media < 7) {
     resultado = 'em recuperação'
-    console.log(`Exercício 5 - O aluno ${resultado}`)
+    console.log(`Exercício 5 - O aluno está ${resultado}`)
 }
 else {
     resultado = 'reprovado'
-    console.log(`Exercício 5 - O aluno ${resultado}`)
+    console.log(`Exercício 5 - O aluno está ${resultado}`)
 }
 
 // Operador ternário
@@ -107,3 +107,63 @@ switch (res) {
         break
 }
 alert(diaSemana)
+
+// Laços de Repetição (loop - while)
+// Sintaxe:
+// Exercício 8
+let condicao
+while (condicao){
+}
+
+// Laços de Repetição (loop - for)
+// Exercício 9
+
+// Sintaxe:
+// for (declaracao da variável; condicao; incremento ou decremento){
+// executa o que estiver dentro desse bloco enquanto a condição for verdadeira
+// }
+
+// Exemplo: imprimir os números de 0 a 99
+// ..
+
+for (let i = 100; i > 50; i--) {
+    console.log(`Exercício 9 - ${i}`)
+}
+
+// Funções
+// Muito útil para reaproveitamento de código e economia de trabalho.
+// Pode receber ou não parâmetros
+// Pode retornar valor ou apenas executar uma ação.
+// Sintaxe:
+// Fuction nome(parâmetros){
+// executa o que estiver dentro desse bloco quando a função for invocada
+// }
+
+// 3 tipos de função:
+// a) Sem parâmetro e sem função
+// Exercício 10
+
+let num1, num2, resultados;
+num1 = Number(prompt(`Digite o 1º número: `))
+num2 = Number(prompt(`Digite o 2º número: `))
+function somaNumeros(){
+    resultados = num1 + num2
+}
+somaNumeros()
+console.log(`Exercício 10 - Soma: ${resultados}`)
+
+// Arrays (vetores)
+// Exercício 11
+
+let nomes = []
+nomes[0] = "João"
+nomes[1] = "Marcos"
+nomes[2] = "Helena"
+nomes[3] = "Ana"
+nomes[4] = "Pedro"
+
+nomes.sort()
+
+for (let j = 0; j < nomes.length; j++){
+    console.log(`Exercício 11 - ${nomes[j]}`)
+}
