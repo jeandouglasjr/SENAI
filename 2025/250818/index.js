@@ -18,12 +18,27 @@ app.get('/cursos', (req, res) => {
     res.json(cursos);
 });
 
-//PAREI AQUI
 // rota para adicionar um novo curso
+/*
 app.post('/cursos', (req, res) => {
     const novoCurso = req.body.nome;
     cursos.push(novoCurso);
     res.status(201).send(`Curso "${novoCurso}" adicionado com sucesso!`);
+});
+*/
+
+// confere
+app.post('/cursos', (req, res) => {
+    const novoNome = req.body.nome;
+if (!novoNome) {
+    return res.status(400).json({erro: "Nome do curso é obrigatório"});
+}
+
+// cria sempre objeto com id e nome
+const novoId = cursos.lenght ? cursos[cursos.length-1].id+1:1;
+const novoCurso = { id: novoId, nome: novoNome};
+cursos.push(novoCurso);
+res.status(201).json(novoCurso);
 });
 
 // rota para atualizar um curso
