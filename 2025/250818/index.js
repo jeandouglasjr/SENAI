@@ -35,7 +35,7 @@ if (!novoNome) {
 }
 
 // cria sempre objeto com id e nome
-const novoId = cursos.lenght ? cursos[cursos.length-1].id+1:1;
+const novoId = cursos.length ? cursos[cursos.length - 1].id + 1 : 1;
 const novoCurso = { id: novoId, nome: novoNome};
 cursos.push(novoCurso);
 res.status(201).json(novoCurso);
@@ -50,10 +50,23 @@ app.put('/cursos/:id', (req, res) => {
 });
 
 // rota para apagar um curso
+/*
 app.delete('/cursos/:id', (req, res) => {
     const { id } = req.params;
     const cursoRemovido = cursos.splice(id, 1);
     res.send(`Curso "${cursoRemovido}" removido com sucesso!`);
+});
+*/
+
+// rota para deletar um curso
+app.delete('/cursos/:id', (req, res) => {
+    const { id } = req.params;
+    const index = cursos.findIndex(c => c.id == id);
+
+    if (index === -1) return res.status(404).json({ erro: "Curso não encontrado"});
+
+    const removido = cursos.splice(index, 1);
+    res.json(removido[0]);
 });
 
 app.listen(port, () => {
