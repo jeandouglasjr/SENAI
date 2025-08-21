@@ -23,9 +23,9 @@ let cursos = [
             especialidade: "Programação Full Stack"
         },
         disciplinas: [
-            { nome: "Algoritmos", carga: 80},
-            { nome: "Banco de Dados", carga: 100},
-            { nome: "Programação Web", carga: 120},
+            { nome: "Algoritmos", carga: 80 },
+            { nome: "Banco de Dados", carga: 100 },
+            { nome: "Programação Web", carga: 120 },
         ]
     }
 ]
@@ -36,12 +36,16 @@ Criar rota que retorne apenas as disciplinas de um curso
 */
 
 app.get('/cursos/:id/disciplinas', (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    const curso = cursos.find(c => c.id === id);
-        if (!curso) { return res.status(404).json({ error: 'Curso não encontrado' });
+    const id = parseInt(req.params.id);
+    const curso = cursos.find(curso => curso.id === id);
+    if (!curso) {
+        return res.status(404).json({
+            error: 'Curso não encontrado'
+        });
     }
     // Retorna apenas os nomes das disciplinas
-    const nomesDisciplinas = curso.disciplinas.map(d => d.nome); res.json(nomesDisciplinas);
+    const nomesDisciplinas = curso.disciplinas.map(disciplina => disciplina.nome);
+    res.json(nomesDisciplinas);
 });
 
 /*
@@ -69,14 +73,14 @@ app.post('/cursos/:id/disciplinas', (req, res) => {
 });
 
 /*
-Crisar rota para buscar todos os cursos de um professor específico
+Criar rota para buscar todos os cursos de um professor específico
 (GET /cursos/PROFESSOR/:nome)
 */
 app.get('/cursos/PROFESSOR/:nome', (req, res) => {
     const nomeProfessor = req.params.nome;
     // Filtra cursos cujo professor tenha o nome informado
     const cursosDoProfessor = cursos.filter(curso => {
-      return curso.professor && curso.professor.nome === nomeProfessor;
+        return curso.professor && curso.professor.nome === nomeProfessor;
     });
     if (cursosDoProfessor.length === 0) {
         return res.status(404).json({
