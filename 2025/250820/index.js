@@ -29,7 +29,48 @@ Criar rota que retorne apenas as disciplinas de um curso
 
 app.get('/cursos/:id/disciplinas', (req, res) => {
     const id = parseInt(req.params.id);
-    
+    const curso = cursos.find(c => c.id === id);
+    if (!curso) {
+        return res.status(404).json({
+            error: 'Curso não encontrado'
+        });
+    }
+    const { nome, carga } = req.body;
+    if (!nome || typeof carga !== 'number') {
+        return res.status(400).json({
+            error: 'Dados inválidos. Informe "nome" e "carga" (número).'
+        });
+    }
+    const novaDisciplina = { nome, carga };
+    curso.disciplinas.push(novaDisciplina);
+    return res.status(201).json(novaDisciplina);
+});
 
+/*
+Criar rota para buscar todos os cursos de um professor específico
+(GET /cursos/PROFESSOR/:nome)
+*/
+app.get('/cursos/PROFESSOR/:nome', (req, res) => {
+    const nomeProfessor = req.params.nome;
+    // Filtra cursos cujo professor tenha o nome informado
+    const cursosDoProfessor = cursos.filter(curso => {
+        return curso.professor && curso.professor.nome === nomeProfessor;
+    });
+    if (cursosDoProfessor.length === 0) {
+        return res.status(404).json({
+            error: 'Nenhum curso encontrado para o professor informado'
+        });
+    }
+    // Opcional: retornar apenas alguns campos se preferir
+    // const resultado = cursosDoProfessor.map(c => ({
+    //   id: c.id,
+    //   nome: c.nome,
+    //   cargaHoraria: c.cargaHoraria,
+    //   modalidade: c.modalidade
+    // }));
+    res.json(cursosDoProfessor);
+});
 
-})
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+});
