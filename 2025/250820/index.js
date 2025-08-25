@@ -54,7 +54,7 @@ app.get('/cursos/PROFESSOR/:nome', (req, res) => {
     const nomeProfessor = req.params.nome;
     // Filtra cursos cujo professor tenha o nome informado
     const cursosDoProfessor = cursos.filter(curso => {
-        return curso.professor && curso.professor.nome === nomeProfessor;
+        return curso.professor && curso.professor.nome.toLocaleLowerCase() === nomeProfessor;
     });
     if (cursosDoProfessor.length === 0) {
         return res.status(404).json({
