@@ -13,8 +13,6 @@ Contexto
 Você foi contratado para criar uma API simples para uma loja. A equipe precisa listar, cadastrar, editar e excluir produtos. Sua missão é criar os endpoints REST e validar os dados básicos.
 
 Requisitos Funcionais (de 1 a 6).
-5. PUT /produtos/:id → atualizar produto.
-6. DELETE /produtos/:id → excluir produto.
 
 Regras de validação
 
@@ -55,7 +53,7 @@ app.get('/produtos', (req, res) => {
 
 // 3. GET /produtos/:id → retornar o produto pelo id.
 app.get('/produtos/:id', (req, res) => {
-    const produto = produtos.find(c => c.id == req.params.id);
+    const produto = produtos.find(p => p.id == req.params.id);
     if (!produto) return res.status(404).json({ erro: "Produto não encontrado" });
     res.json(produto);
 });
@@ -79,6 +77,37 @@ app.post('/produtos/', (req, res) => {
     res.status(201).json(novoProduto);
 });
   
+// 5. PUT /produtos/:id → atualizar produto.
+app.put('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const { nome, preco, categoria } = req.body;
+
+    const produto = produtos.find(p => p.id == id);
+    if (!produto) return res.status(404).json({ erro: "Produto não encontrado"});
+
+    if (nome)
+        produto.nome = nome;
+
+    if (preco)
+        produto.preco = preco;
+
+    if (categoria)
+        produto.categoria = categoria;
+
+    res.json(produto);
+});
+
+// 6. DELETE /produtos/:id → excluir produto.
+app.delete('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const index = produtos.findIndex(p => p.id == id);
+  
+    if (index === -1) return res.status(404).json({ erro: "Produto não encontrado" });
+  
+    const removido = produtos.splice(index, 1);
+    res.json(removido[0]);
+  });
+
 // Listen
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
