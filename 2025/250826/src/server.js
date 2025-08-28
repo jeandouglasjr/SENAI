@@ -5,7 +5,7 @@ Desenvolvimento de Sistemas
 Docente: Diego Ramos da Silva
 Discente: Jean Douglas Junior
 
-Refatorando os arquivos anteriores em controllers e services
+Refatorando os arquivos anteriores em controllers e services (módulos)
 
 */
 
