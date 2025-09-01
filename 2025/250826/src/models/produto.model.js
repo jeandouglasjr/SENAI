@@ -1,4 +1,10 @@
+const fs = require('fs');
+
+const conteudo = require('./bd_mock.json');
+console.log(conteudo);
+
 let seq = 1;
+
 const produtos = [];
 
 function findAll() {
