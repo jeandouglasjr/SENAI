@@ -11,16 +11,20 @@ function findAll() {
     return users;
 }
 
-function findById() {
-    return users.find(p => p.id === id) || null;
+function findById(id) {
+    return users.find(u => u.id === id) || null;
+}
+
+function findByEmail(email) {
+    return users.find(m => m.email === email) || null;
 }
 
 function create({ name, email, password }) {
     const novo = {
         id: seq++,
         name: name.trim(),
-        email,
-        ...(password !== undefined ? { password: password.trim() } : {})
+        email: email.trim(),
+        password: password.trim()
     };
     users.push(novo);
     return novo;
