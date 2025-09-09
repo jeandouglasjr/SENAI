@@ -52,3 +52,4 @@ app.use('/users', usersRouter);
 app.use((_, res) => res.status(404).json({ erro: 'Rota não encontrada' }));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API da Loja em http://localhost:${PORT}`));
+
