@@ -1,3 +1,7 @@
+// Importar o express
+// Framework para criar API
+// npm install express
+
 const express = require("express");
 const app = express();
 // Importar a conexão do banco de dados
