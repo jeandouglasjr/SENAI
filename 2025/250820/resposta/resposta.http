@@ -1,0 +1,47 @@
+### Listar cursos
+GET http://localhost:3000/cursos
+
+### Buscar curso por ID
+GET http://localhost:3000/cursos/1
+
+### Adicionar curso
+POST http://localhost:3000/cursos
+Content-Type: application/json
+
+{
+  "nome": "Inteligência Artificial",
+  "cargaHoraria": 800,
+  "modalidade": "EAD",
+  "professor": { "nome": "Maria Oliveira", "especialidade": "Machine Learning" },
+  "disciplinas": [
+    { "nome": "Redes Neurais", "carga": 100 },
+    { "nome": "Visão Computacional", "carga": 90 }
+  ]
+}
+
+### Atualizar curso
+PUT http://localhost:3000/cursos/1
+Content-Type: application/json
+
+{
+  "modalidade": "EAD",
+  "cargaHoraria": 1500
+}
+
+### Deletar curso
+DELETE http://localhost:3000/cursos/1
+
+### Listar disciplinas de um curso
+GET http://localhost:3000/cursos/1/disciplinas
+
+### Adicionar disciplina a um curso
+POST http://localhost:3000/cursos/1/disciplinas
+Content-Type: application/json
+
+{
+  "nome": "Engenharia de Software",
+  "carga": 80
+}
+
+### Buscar cursos de um professor
+GET http://localhost:3000/cursos/professor/Carlos Silva

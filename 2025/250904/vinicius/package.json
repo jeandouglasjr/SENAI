@@ -1,0 +1,17 @@
+{
+  "name": "prova-api",
+  "version": "1.0.0",
+  "description": "Prova 1 API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Vinicius J. Pereira",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
