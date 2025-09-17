@@ -1,31 +1,23 @@
-import { DataTypes } from 'sequelize'
-import { conexao } from '../database.js'
+import { DataTypes } from "sequelize";
+import { conexao } from "../database.js";
 
-const Hero = conexao.define('Hero', {
-    nome: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    poder: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    vitorias: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    derrotas: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-})
+const Hero = conexao.define("Hero", {
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  poder: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  vitorias: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  derrotas: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+});
 
-export { Hero }
-
-/*
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoincrement: true,
-    },
-*/
+export { Hero };
