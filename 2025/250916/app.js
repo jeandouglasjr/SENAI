@@ -10,12 +10,12 @@ import { router } from './routes/herosRoute.js'
 const app = express()
 
 app.use(express.json())
-app.use(router)
+app.use('/heros', router)
 
 // testar a conexão
 try {
-//  await conexao.authenticate()
-    await conexao.sync({ alter: true })
+    // await conexao.authenticate()
+    await conexao.sync()
     console.log('Conectado com sucesso')
 }
 catch(erro) {

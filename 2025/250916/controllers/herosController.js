@@ -1,9 +1,9 @@
 import { Hero } from '../models/herosModel.js'
 
-async function list (_, res) {
+async function list (req, res) {
     try {
         const hero = await Hero.findAll()
-        return res.status(200).send({ mensagemHero})        
+        return res.status(200).send({ mensagem: hero })        
     }
     catch (error) {
         console.log(error)
@@ -16,9 +16,9 @@ async function listById (req, res) {
     try {
         const { id } = req.params
         // buscar dado pela chave primaria (primary key ou pk)
-        const hero = await Hero.findByPk(id)
+        // const hero = await Hero.findByPk(id)
         // outra forma de buscar pelo primeiro dado do banco de dados (findOne)
-        // const usuario = await Usuario.findOne({ where: { id: id } })
+        const hero = await Hero.findOne({ where: { id } })
         // const usuario = await Usuario.findAll({ where: { endereco: endereco }})
         res.status(200).send({ mensagem: hero })
     }
@@ -32,15 +32,20 @@ async function listById (req, res) {
 async function create (req, res) {
     try {
         const { nome, poder, vitorias, derrotas } = req.body
+        console.log(req.body)
         if(!nome || !poder || !vitorias || !derrotas) {
             res.status(400).send({ mensagem: 'Campos obrigatórios'})
         }
+        let cod = 1;
         const heroCreated = await Hero.create({ nome, poder, vitorias, derrotas })
         res.status(201).send({ mensagem: heroCreated })
     }
     catch (error) {
+
+        console.log('aki')
+
         console.log(error)
-        res.status(400).send({ mensagem: 'Erro interno'})
+        res.status(400).send({ mensagem: 'Erro ao criar herói' })
     }
 }
 

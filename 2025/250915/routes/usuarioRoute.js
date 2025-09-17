@@ -6,7 +6,7 @@ import { list, listById, create, updateById, deleteById } from '../controllers/u
 
 router.get('/usuarios', list)
 router.get('usuarios/:id', listById)
-router.post('usuarios/:id', create)
+router.post('usuarios/', create)
 router.put('usuarios/:id', updateById)
 router.delete('usuarios/:id', deleteById)
 
