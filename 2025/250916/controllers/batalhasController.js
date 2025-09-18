@@ -1,15 +1,5 @@
 import { Batalha } from "../models/batalhasModel.js";
 
-async function list(req, res) {
-  try {
-    const batalha = await Batalha.findAll();
-    return res.status(200).send({ mensagem: batalha });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ mensagem: "Erro interno" });
-  }
-}
-
 // listar por id
 async function listById(req, res) {
   try {
@@ -26,6 +16,17 @@ async function listById(req, res) {
   } catch (error) {
     console.log(error);
     res.status(402).send({ mensagem: "Batalha não encontrado" });
+  }
+}
+
+// batalhar
+async function batalhar(req, res) {
+  try {
+
+  }
+  catch (error) {
+    console.log(error);
+    res.status(402).send({ mensagem: "Erro na batalha" })
   }
 }
 
