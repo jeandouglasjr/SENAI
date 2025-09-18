@@ -5,15 +5,11 @@ const batalhaRouter = Router();
 import {
   list,
   listById,
-  create,
-  updateById,
-  deleteById,
-} from "../controllers/herosController.js";
+  create
+} from "../controllers/batalhasController.js";
 
 batalhaRouter.get("/", list);
 batalhaRouter.get("/:id", listById);
 batalhaRouter.post("/", create);
-batalhaRouter.put("/:id", updateById);
-batalhaRouter.delete("/:id", deleteById);
 
 export { batalhaRouter };

@@ -17,7 +17,10 @@ const Hero = conexao.define("Hero", {
   derrotas: {
     type: DataTypes.INTEGER,
     allowNull: false,
-  },
+  }
+},
+{
+  freezeTableName: true
 });
 
 export { Hero };

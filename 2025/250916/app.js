@@ -7,7 +7,7 @@ import "dotenv/config";
 import { conexao } from "./database.js";
 import { herosRouter } from "./routes/herosRoute.js";
 import { viloesRouter } from "./routes/viloesRoute.js";
-import { batalhaRouter } from "./routes/batalhaRoute.js";
+import { batalhaRouter } from "./routes/batalhasRoute.js";
 
 const app = express();
 
