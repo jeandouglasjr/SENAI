@@ -5,12 +5,16 @@ import "dotenv/config";
 
 // importar conexao do database
 import { conexao } from "./database.js";
-import { router } from "./routes/herosRoute.js";
+import { herosRouter } from "./routes/herosRoute.js";
+import { viloesRouter } from "./routes/viloesRoute.js";
+import { batalhaRouter } from "./routes/batalhaRoute.js";
 
 const app = express();
 
 app.use(express.json());
-app.use("/heros", router);
+app.use("/heros", herosRouter);
+app.use("/viloes", viloesRouter);
+app.use('/batalha', batalhaRouter);
 
 // testar a conexão
 try {
@@ -22,4 +26,3 @@ try {
 }
 
 app.listen(3000, () => console.log("Api iniciado"));
-triste

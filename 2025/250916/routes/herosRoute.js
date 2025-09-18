@@ -1,6 +1,6 @@
 // destructuring / desestruturação
 import { Router } from "express";
-const router = Router();
+const herosRouter = Router();
 
 import {
   list,
@@ -10,10 +10,10 @@ import {
   deleteById,
 } from "../controllers/herosController.js";
 
-router.get("/", list);
-router.get("/:id", listById);
-router.post("/", create);
-router.put("/:id", updateById);
-router.delete("/:id", deleteById);
+herosRouter.get("/", list);
+herosRouter.get("/:id", listById);
+herosRouter.post("/", create);
+herosRouter.put("/:id", updateById);
+herosRouter.delete("/:id", deleteById);
 
-export { router };
+export { herosRouter };
