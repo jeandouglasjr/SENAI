@@ -1,5 +1,15 @@
 import { Batalha } from "../models/batalhasModel.js";
 
+async function list(req, res) {
+  try {
+    const batalha = await Batalha.findAll();
+    return res.status(200).send({ mensagem: batalha });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
 // listar por id
 async function listById(req, res) {
   try {
@@ -22,28 +32,50 @@ async function listById(req, res) {
 // batalhar
 async function batalhar(req, res) {
   try {
+    const { id_vilao, id_heroi } = req.body;
+    let nome_vencedor = "";
+    const segundos = new Date().getSeconds();
+    Hero.findById(id_heroi).then((heroi) => {
+      Vilao.findById(id_vilao).then((vilao) => {
+        const ts = timesStamp; // '2023-09-05 14:48:11.123'
+        // Troca o espaço por 'T' para ficar compatível com ISO 8601
+        const date = new Date(ts.replace(" ", "T"));
+        const segundos = date.getUTCSeconds(); // segundos (UTC)
+        console.log(segundos); // 11
+        heroi.segundos = segundos;
 
-  }
-  catch (error) {
-    console.log(error);
-    res.status(402).send({ mensagem: "Erro na batalha" })
-  }
-}
+        // número inteiro entre 0 e 59
+        const randomSeconds = Math.floor(Math.random() * 60);
+        console.log(randomSeconds);
+        vilao.segundos = randomSeconds;
 
-// criar dados = create
-async function create(req, res) {
-  try {
-    const { id_vilao, id_heroi, nome_vencedor } = req.body;
-    console.log(req.body);
-    if (!id_vilao || !id_heroi || !nome_vencedor) {
-      res.status(400).send({ mensagem: "Campos obrigatórios" });
-    }
-    const batalhaCreated = await Batalha.create({ id_vilao, id_heroi, nome_vencedor });
-    res.status(201).send({ mensagem: batalhaCreated });
+        if (heroi.segundos > vilao.segundos) {
+          nome_vencedor = heroi.nome;
+          heroi.vitorias += 1;
+          vilao.derrotas += 1;
+        } else if (vilao.segundos > heroi.segundos) {
+          nome_vencedor = vilao.nome;
+          vilao.vitorias += 1;
+          heroi.derrotas += 1;
+        } else if ((vilao.segundo = heroi.segundos)) {
+          nome_vencedor = heroi.nome;
+          heroi.vitorias += 1;
+          vilao.derrotas += 1;
+        }
+        heroi.save();
+        vilao.save();
+        const batalhaCreated = Batalha.create({
+          id_vilao,
+          id_heroi,
+          nome_vencedor,
+        });
+        res.status(201).send({ mensagem: batalhaCreated });
+      });
+    });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ mensagem: "Erro ao criar batalha" });
+    res.status(402).send({ mensagem: "Erro na batalha" });
   }
 }
 
-export { list, listById, create };
+export { batalhar, list, listById };

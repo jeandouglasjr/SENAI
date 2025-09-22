@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use("/heros", herosRouter);
 app.use("/viloes", viloesRouter);
-app.use('/batalha', batalhaRouter);
+app.use("/batalha", batalhaRouter);
 
 // testar a conexão
 try {

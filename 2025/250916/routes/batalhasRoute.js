@@ -2,12 +2,10 @@
 import { Router } from "express";
 const batalhaRouter = Router();
 
-import {
-  listById,
-  create
-} from "../controllers/batalhasController.js";
+import { list, listById, batalhar } from "../controllers/batalhasController.js";
 
+batalhaRouter.get("/", list);
 batalhaRouter.get("/:id", listById);
-batalhaRouter.post("/", create);
+batalhaRouter.post("/", batalhar);
 
 export { batalhaRouter };
