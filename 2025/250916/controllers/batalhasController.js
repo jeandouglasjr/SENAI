@@ -50,25 +50,21 @@ async function batalhar(req, res) {
     const randomSeconds = Math.floor(Math.random() * 60);
     vilao.segundos = randomSeconds;
 
-    if (heroi.segundos > vilao.segundos) {
+    if (heroi.segundos >= vilao.segundos) {
       nome_vencedor = heroi.nome;
       heroi.vitorias += 1;
       vilao.derrotas += 1;
-    } else if (vilao.segundos > heroi.segundos) {
+    } else {
       nome_vencedor = vilao.nome;
       vilao.vitorias += 1;
       heroi.derrotas += 1;
-    } else if ((vilao.segundo == heroi.segundos)) {
-      nome_vencedor = heroi.nome;
-      heroi.vitorias += 1;
-      vilao.derrotas += 1;
     }
-    heroi.save();
-    vilao.save();
+    await heroi.save();
+    await vilao.save();
     const batalhaCreated = await Batalha.create({
       id_vilao,
       id_heroi,
-      nome_vencedor,
+      nome_vencedor
     });
     res.status(201).send({ mensagem: batalhaCreated });
   } catch (error) {
