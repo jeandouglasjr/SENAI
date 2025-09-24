@@ -1,4 +1,5 @@
 import express from "express";
+import jwt from "jsonwebtoken";
 
 //ativação do reconhecimento do dotenv (arquivo com variaveis de ambiente/credenciais)
 import "dotenv/config";
@@ -8,10 +9,12 @@ import { conexao } from "./database.js";
 import { herosRouter } from "./routes/herosRoute.js";
 import { viloesRouter } from "./routes/viloesRoute.js";
 import { batalhaRouter } from "./routes/batalhasRoute.js";
+import { authRouter } from "./middleware/auth.js"
 
 const app = express();
 
 app.use(express.json());
+app.use("/auth", authRouter);
 app.use("/heros", herosRouter);
 app.use("/viloes", viloesRouter);
 app.use("/batalha", batalhaRouter);
