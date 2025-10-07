@@ -1,5 +1,29 @@
-import { render } from 'preact'
+import React from 'react'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
-import { App } from './app.jsx'
+import Home from './pages/Home.jsx'
+import App from './App.jsx'
+import Filmes from './pages/Filmes.jsx'
 
-render(<App />, document.getElementById('app'))
+  const rotas = createBrowserRouter([
+    {
+      path: '/',
+      element: <Home />
+    },
+    {
+      path: '/app',
+      element: <App />
+    },
+    {
+      path: '/filmes/:nome',
+      element: <Filmes />
+    }
+  ])
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <RouterProvider router = {rotas} />
+  </StrictMode>,
+)
