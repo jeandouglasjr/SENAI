@@ -11,7 +11,7 @@ export default function Produto(){
     })
 
     async function chamarApi(nomeRecebido) {
-        const resultado = await axios.get('https://omdbapi.com/?apikey=28d0dee8&t=' + nomeRecebido)
+        const resultado = await axios.get('https://omdbapi.com/?apikey=28d0dee8&t=batman')
         console.log(resultado)
     }
 
