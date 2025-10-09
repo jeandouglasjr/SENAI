@@ -11,7 +11,7 @@ import Filmes from './pages/Filmes.jsx'
       element: <App />
     },
     {
-      path: '/filmes/:nome',
+      path: '/filmes',
       element: <Filmes />
     }
   ])

@@ -17,11 +17,36 @@ function App() {
 
   return (
     <>
-      <h1>Exercício</h1>
       <div className="card">
-      <Link to='/'>Início</Link>
-      <Link to='/filmes'>Filmes</Link>
-      </div>
+      <Link
+          to="/"
+          style={{
+            marginRight: '15px',
+            textDecoration: 'none',
+            backgroundColor: '#28a745',
+            color: 'white',
+            padding: '8px 15px',
+            borderRadius: '4px'
+          }}
+        >
+          Início
+        </Link>
+
+        <Link
+          to="/filmes"
+          style={{
+            textDecoration: 'none',
+            backgroundColor: '#007bff',
+            color: 'white',
+            padding: '8px 15px',
+            borderRadius: '4px'
+          }}
+        >
+          Filmes
+        </Link>
+        <h1>SENAI - Desenvolvimento de Sistemas</h1>
+        <h2>Exercício Lista de Filmes</h2>
+        </div>
     </>
   )
 }
