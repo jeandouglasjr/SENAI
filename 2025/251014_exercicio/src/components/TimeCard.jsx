@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function MovieCard({ movie }) {
+export default function TimeCard({ time }) {
   return (
     <div
       style={{
@@ -12,15 +12,15 @@ export default function MovieCard({ movie }) {
         background: "#fff",
       }}
     >
-      <Link to={`/movie/${movie.imdbID}`} style={{ textDecoration: "none", color: "inherit" }}>
-        <img
-          src={movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200x300"}
-          alt={movie.Title}
+      <Link to={`/time/${time.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+        {/* <img
+          src={time.id !== "N/A" ? time.nome_fantasia : ""}
+          alt={time.Title}
           style={{ width: "100%", height: "300px", objectFit: "cover" }}
-        />
+        /> */}
         <div style={{ padding: "10px" }}>
-          <h4>{movie.Title}</h4>
-          <small>{movie.Year}</small>
+          <h4>{time.nome_fantasia}</h4>
+          {/* <small>{time.Year}</small> */}
         </div>
       </Link>
     </div>

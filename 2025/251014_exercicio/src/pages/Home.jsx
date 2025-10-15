@@ -1,23 +1,42 @@
-import { useState } from "react";
-import { searchMovies } from "../services/omdbApi";
-import MovieCard from "../components/MovieCard";
+import { useState, useEffect } from "react";
+import { searchTimes } from "../services/omdbApi";
+import TimeCard from "../components/TimeCard";
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState([]);
+  const [times, setTimes] = useState([]);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-    const data = await searchMovies(query);
-    setMovies(data.Search || []);
-  };
+  const valorTimes = async () => {
+    const data = await searchTimes();   
+    console.log(data);
+  }
+
+  // const handleSearch = async (e) => {
+  //   e.preventDefault();
+  //   if (!query.trim()) return;
+  //   const data = await searchTimes(query);
+  //   setTimes(data.Search || []);
+  // };
+
+  useEffect(() => {
+    const data = searchTimes();  
+    const arr = Object.values(data ?? {});
+    setTimes(Array.isArray(arr) ? arr : []);
+    valorTimes();
+  }, []);
+
+
+    // useEffect(() => {
+    //   getMovieDetails(id).then(setMovie);
+    // }, [id]);
+  
+    if (!times) return <p>Carregando...</p>;
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>🎬 Busca de Filmes</h1>
+      <h1>🎬 Busca de Times</h1>
 
-      <form onSubmit={handleSearch} style={{ marginBottom: "20px" }}>
+      {/* <form onSubmit={handleSearch} style={{ marginBottom: "20px" }}> */}
         <input
           type="text"
           placeholder="Digite o nome do filme..."
@@ -28,7 +47,7 @@ export default function Home() {
         <button type="submit" style={{ padding: "10px 20px" }}>
           Buscar
         </button>
-      </form>
+      {/* </form> */}
 
       <div
         style={{
@@ -37,10 +56,11 @@ export default function Home() {
           gap: "20px",
         }}
       >
-        {movies.map((movie) => (
-          <MovieCard key={movie.imdbID} movie={movie} />
+        {times.map((time) => (
+          <TimeCard key={1} time={time} />
         ))}
       </div>
     </div>
   );
 }
+

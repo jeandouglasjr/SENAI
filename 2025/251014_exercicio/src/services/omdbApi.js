@@ -1,18 +1,17 @@
 import axios from "axios";
 
-const API_KEY = "28d0dee8";
-const BASE_URL = "https://www.omdbapi.com/";
+const BASE_URL = "https://api.cartola.globo.com/clubes";
 
-export const searchMovies = async (query) => {
+export const searchTimes = async (query) => {
   const response = await axios.get(BASE_URL, {
-    params: { s: query, apikey: API_KEY },
+    params: { s: query },
   });
   return response.data;
 };
 
-export const getMovieDetails = async (id) => {
+export const getTimeDetails = async (id) => {
   const response = await axios.get(BASE_URL, {
-    params: { i: id, apikey: API_KEY },
+    params: { i: id },
   });
   return response.data;
 };
