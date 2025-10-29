@@ -6,28 +6,28 @@ import Home from './pages/Home.jsx'
 import Contato from './pages/Contato.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AuthProvider from './contexts/AuthProvider.jsx'
+import RotaProtegida from './components/RotaProtegida.jsx'
 
-// definição de páginas da aplicação
-
+// Definição das páginas da aplicação
 const roteador = createBrowserRouter([
-    {
-        path: '/home',
-        element: <Home />
-    },
-    {
-        path: '/login',
-        element: <Login />
-    },
-    {
-        path: '/contato',
-        element: <Contato />
-    }
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/',
+    element: <RotaProtegida elemento={ <Home/>} />,
+  },
+  {
+    path: '/contato/:id',
+    element: <RotaProtegida elemento={ <Contato/>} />,
+  },
 ])
 
 createRoot(document.getElementById('root')).render(
-    <StrictMode>
-        <AuthProvider>
-            <RouterProvider router={roteador} />
-        </AuthProvider>
-    </StrictMode>
+  <StrictMode>
+    <AuthProvider>
+      <RouterProvider router={roteador} />
+    </AuthProvider>
+  </StrictMode>
 )
