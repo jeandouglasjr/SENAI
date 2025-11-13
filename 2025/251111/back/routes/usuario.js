@@ -1,12 +1,12 @@
 import express from 'express'
-const router = express.Router()
+const routerUsuarios = express.Router()
 
 import { listar, listarPeloId, excluir, criar, atualizar } from '../controllers/usuario.js'
 
-router.get('/', listar)
-router.get('/:id', listarPeloId)
-router.delete('/:id', excluir)
-router.post('/', criar)
-router.put('/:id', atualizar)
+routerUsuarios.get('/usuario', listar)
+routerUsuarios.get('/usuario/:id', listarPeloId)
+routerUsuarios.delete('/usuario/:id', excluir)
+routerUsuarios.post('/usuario', criar)
+routerUsuarios.put('/usuario/:id', atualizar)
 
-export { router }
+export { routerUsuarios }

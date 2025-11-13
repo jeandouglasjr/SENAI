@@ -1,24 +1,25 @@
 import express from 'express'
+
 // ativação do reconhecimento do dotenv (arquivo com variaveis de ambiente/credenciais)
 import 'dotenv/config'
 // importar conexao do database
 import { conexao } from './database.js'
 
 try{
-    await sequelize.sync()
+    await conexao.sync()
 }
 catch(error){
     console.error(error)
 }
 // importar arquivo de rotas
-import { router } from './routes/usuario.js'
+import { routerUsuarios } from './routes/usuario.js'
 
 const app = express()
 
 // Permitir o uso de JSON no body
 app.use(express.json())
 // Indicar o uso do arquivo de rotas
-app.use('/', router)
+app.use('/', routerUsuarios)
 
 // Teste de conexão com o banco de dados
 try {
@@ -31,5 +32,5 @@ try {
 } catch(erro) {
     console.log('Deu erro na conexao')
 }
-const port = process.env.port;
+const port = process.env.PORT;
 app.listen(port, () => console.log(`http://localhost:${port}`))

@@ -11,13 +11,16 @@ async function listar(_, res) {
 }
 
 async function listarPeloId(req, res) {
+    if (isNaN(id)) {
+        return res.status(400).send({ mensagem: "ID inválido" });
+      }
     try {
         const { id } = req.params
         // Buscar dado pela chave primaria (primary key ou pk)
         const usuario = await Usuario.findByPk(id)
         // const usuario = await Usuario.findOne({ where: { id: id } })
         // const usuario = await Usuario.findAll({ where: { endereco: endereco } })
-        res.status(200).send({ mensagem: usuario })
+        res.status(200).send({ usuario })
     } catch (err) {
         console.log(err)
         res.status(500).send({ mensagem: 'Erro interno' })
@@ -39,11 +42,11 @@ async function excluir(req, res) {
 // CRIAR DADOS = create
 async function criar(req, res) {
     try {
-        const { nome, email, cpf, senha, data_cadastro } = req.body
+        const { nome, email, cpf, senha } = req.body
         if (!nome || !email || !cpf || !senha) {
             return res.status(400).send({ mensagem: 'Campos nome, email, cpf e senha são obrigatorios' })
         }
-        const usuarioCriado = await Usuario.create({ nome, email, cpf, senha, data_cadastro })
+        const usuarioCriado = await Usuario.create({ nome, email, cpf, senha })
         res.status(201).send({ mensagem: usuarioCriado })
     } catch (err) {
         console.log(err)
@@ -56,11 +59,11 @@ async function atualizar(req, res) {
     try {
         const { nome, email, cpf, senha } = req.body
         const { id } = req.params
-        if (!id || !nome || !email || !cpf || !id) {
+        if (!id || !nome || !email || !cpf || !senha) {
             return res.status(400).send({ mensagem: 'Campos id, nome, email, cpf e senha são obrigatorios' })
         }
         const usuarioAtualizado = await Usuario.update({ nome, email, cpf, senha }, { where: { id } })
-        res.status(201).send({ mensagem: usuarioAtualizado })
+        res.status(200).send({ usuarioAtualizado })
     } catch (err) {
         console.log(err)
         res.status(500).send({ mensagem: 'Erro interno' })
