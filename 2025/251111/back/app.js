@@ -11,14 +11,16 @@ try {
   console.error(error);
 }
 // importar arquivo de rotas
-import { routerUsuarios } from "./routes/usuario.js";
+import { routerUsuario } from "./routes/usuario.js";
+import { routerAnimal } from "./routes/animal.js";
 
 const app = express();
 
 // Permitir o uso de JSON no body
 app.use(express.json());
 // Indicar o uso do arquivo de rotas
-app.use("/", routerUsuarios);
+app.use("/", routerUsuario);
+app.use("/", routerAnimal);
 
 // Teste de conexão com o banco de dados
 try {

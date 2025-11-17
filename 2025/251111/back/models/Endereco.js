@@ -54,4 +54,12 @@ const Endereco = conexao.define(
   }
 );
 
+Endereco.associate = (models) => {
+  // Um endereço pertence a um usuário (FK id_usuario)
+  Endereco.belongsTo(models.Usuario, {
+    foreignKey: "id_usuario",
+    as: "usuario",
+  });
+};
+
 export { Endereco };

@@ -1,5 +1,5 @@
 import express from "express";
-const routerUsuarios = express.Router();
+const routerUsuario = express.Router();
 
 import {
   listar,
@@ -9,10 +9,10 @@ import {
   atualizar,
 } from "../controllers/usuario.js";
 
-routerUsuarios.get("/usuario", listar);
-routerUsuarios.get("/usuario/:id", listarPeloId);
-routerUsuarios.delete("/usuario/:id", excluir);
-routerUsuarios.post("/usuario", criar);
-routerUsuarios.put("/usuario/:id", atualizar);
+routerUsuario.get("/usuario", listar);
+routerUsuario.get("/usuario/:id", listarPeloId);
+routerUsuario.delete("/usuario/:id", excluir);
+routerUsuario.post("/usuario", criar);
+routerUsuario.put("/usuario/:id", atualizar);
 
-export { routerUsuarios };
+export { routerUsuario };

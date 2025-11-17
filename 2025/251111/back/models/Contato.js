@@ -11,11 +11,11 @@ const Contato = conexao.define(
       autoIncrement: true,
     },
     fone: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     email: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     id_usuario: {
@@ -34,4 +34,12 @@ const Contato = conexao.define(
   }
 );
 
-export { Perfil };
+Contato.associate = (models) => {
+  // Um contato pertence a um usuário (FK id_usuario)
+  Contato.belongsTo(models.Usuario, {
+    foreignKey: "id_usuario",
+    as: "usuario",
+  });
+};
+
+export { Contato };
