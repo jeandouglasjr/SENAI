@@ -1,0 +1,110 @@
+import { Animal } from "../models/Animal.js";
+
+async function listar(_, res) {
+  try {
+    const animal = await Animal.findAll();
+    return res.status(200).send({ mensagem: animal });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+async function listarPeloId(req, res) {
+  if (isNaN(id)) {
+    return res.status(400).send({ mensagem: "ID inválido" });
+  }
+  try {
+    const { id } = req.params;
+    // Buscar dado pela chave primaria (primary key ou pk)
+    const animal = await Animal.findByPk(id);
+    // const usuario = await Usuario.findOne({ where: { id: id } })
+    // const usuario = await Usuario.findAll({ where: { endereco: endereco } })
+    res.status(200).send({ animal });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+async function excluir(req, res) {
+  try {
+    const { id } = req.params;
+    // DELETE = destroy
+    await Animal.destroy({ where: { id } });
+    res.status(204).send({ mensagem: "Animal excluido com sucesso" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+// CRIAR DADOS = create
+async function criar(req, res) {
+  try {
+    const { nome, especie, raca, sexo, nascimento, porte, saude, status } =
+      req.body;
+    if (
+      !nome ||
+      !especie ||
+      !raca ||
+      !sexo ||
+      !nascimento ||
+      !porte ||
+      !saude ||
+      !status
+    ) {
+      return res
+        .status(400)
+        .send({ mensagem: "Todos os campos são obrigatórios!" });
+    }
+    const usuarioCriado = await Usuario.create({
+      nome,
+      especie,
+      raca,
+      sexo,
+      nascimento,
+      porte,
+      saude,
+      status,
+    });
+    res.status(201).send({ mensagem: "Animal Criado" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+// ATUALIZAR DADOS = update
+async function atualizar(req, res) {
+  try {
+    const { nome, especie, raca, sexo, nascimento, porte, saude, status } =
+      req.body;
+    const { id } = req.params;
+    if (
+      !id ||
+      !nome ||
+      !especie ||
+      !raca ||
+      !sexo ||
+      !nascimento ||
+      !porte ||
+      !saude ||
+      !status
+    ) {
+      return res.status(400).send({
+        mensagem: "Todos os campos são obrigatorios!",
+      });
+    }
+    const animalAtualizado = await Animal.update(
+      { nome, especie, raca, sexo, nascimento, porte, saude, status },
+      { where: { id } }
+    );
+    res.status(200).send({ animalAtualizado });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+export { listar, listarPeloId, excluir, criar, atualizar };

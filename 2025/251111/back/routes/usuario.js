@@ -9,7 +9,7 @@ import {
   atualizar,
 } from "../controllers/usuario.js";
 
-routerUsuarios.get("/", listar);
+routerUsuarios.get("/usuario", listar);
 routerUsuarios.get("/usuario/:id", listarPeloId);
 routerUsuarios.delete("/usuario/:id", excluir);
 routerUsuarios.post("/usuario", criar);
