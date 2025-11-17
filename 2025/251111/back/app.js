@@ -18,7 +18,7 @@ const app = express();
 // Permitir o uso de JSON no body
 app.use(express.json());
 // Indicar o uso do arquivo de rotas
-app.use("/usuario", routerUsuarios);
+app.use("/", routerUsuarios);
 
 // Teste de conexão com o banco de dados
 try {
