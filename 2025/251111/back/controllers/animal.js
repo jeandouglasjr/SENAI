@@ -40,7 +40,7 @@ async function excluir(req, res) {
 // CRIAR DADOS = create
 async function criar(req, res) {
   try {
-    const { nome, especie, raca, sexo, nascimento, porte, saude, status } =
+    const { nome, especie, raca, sexo, nascimento, porte, saude, status, data_resgate } =
       req.body;
     if (
       !nome ||
@@ -65,18 +65,19 @@ async function criar(req, res) {
       porte,
       saude,
       status,
+      data_resgate,
     });
-    res.status(201).send({ mensagem: "Animal Criado" });
+    res.status(201).send({ Mensagem: `Animal cadastrado` });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ mensagem: "Erro interno" });
+    res.status(500).send({ Mensagem: "Erro ao cadastrar animal" });
   }
 }
 
 // ATUALIZAR DADOS = update
 async function atualizar(req, res) {
   try {
-    const { nome, especie, raca, sexo, nascimento, porte, saude, status } =
+    const { nome, especie, raca, sexo, nascimento, porte, saude, status, data_resgate } =
       req.body;
     const { id } = req.params;
     if (
@@ -95,13 +96,13 @@ async function atualizar(req, res) {
       });
     }
     const animalAtualizado = await Animal.update(
-      { nome, especie, raca, sexo, nascimento, porte, saude, status },
+      { nome, especie, raca, sexo, nascimento, porte, saude, status, data_resgate },
       { where: { id } }
     );
-    res.status(200).send({ animalAtualizado });
+    res.status(200).send({ Mensagem: `Animal atualizado`});
   } catch (err) {
     console.log(err);
-    res.status(500).send({ mensagem: "Erro interno" });
+    res.status(500).send({ Mensagem: "Erro ao atualizar animal" });
   }
 }
 

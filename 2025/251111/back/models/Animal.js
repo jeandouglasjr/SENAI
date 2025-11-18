@@ -42,6 +42,10 @@ const Animal = conexao.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    data_resgate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    }
   },
   {
     createdAt: "data_cadastro", // Criar coluna de criação com o nome 'data_cadastro'
