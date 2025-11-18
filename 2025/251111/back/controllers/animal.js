@@ -18,8 +18,6 @@ async function listarPeloId(req, res) {
     const { id } = req.params;
     // Buscar dado pela chave primaria (primary key ou pk)
     const animal = await Animal.findByPk(id);
-    // const usuario = await Usuario.findOne({ where: { id: id } })
-    // const usuario = await Usuario.findAll({ where: { endereco: endereco } })
     res.status(200).send({ animal });
   } catch (err) {
     console.log(err);
@@ -58,7 +56,7 @@ async function criar(req, res) {
         .status(400)
         .send({ mensagem: "Todos os campos são obrigatórios!" });
     }
-    const usuarioCriado = await Usuario.create({
+    const animalCriado = await Animal.create({
       nome,
       especie,
       raca,

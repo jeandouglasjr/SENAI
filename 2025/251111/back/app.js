@@ -13,6 +13,7 @@ try {
 // importar arquivo de rotas
 import { routerUsuario } from "./routes/usuario.js";
 import { routerAnimal } from "./routes/animal.js";
+import { routerHistoricoAdocao } from "./routes/historico_adocao.js";
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(express.json());
 // Indicar o uso do arquivo de rotas
 app.use("/", routerUsuario);
 app.use("/", routerAnimal);
-
+app.use("/", routerHistoricoAdocao);
 // Teste de conexão com o banco de dados
 try {
   await conexao.authenticate();

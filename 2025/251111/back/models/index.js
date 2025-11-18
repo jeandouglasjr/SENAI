@@ -1,6 +1,5 @@
 // models/index.js
 
-import { conexao } from "../database.js"; // Assumindo que você precisa da conexão
 import { Usuario } from "./Usuario.js"; // Caminho para o seu arquivo Usuario.js
 import { Endereco } from "./Endereco.js"; // Caminho para o seu arquivo Endereco.js
 import { Contato } from "./Contato.js"; // Caminho para o seu arquivo Contato.js
