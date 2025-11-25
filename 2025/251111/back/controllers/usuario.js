@@ -3,7 +3,12 @@ import { Usuario, Endereco, Contato } from "../models/index.js";
 
 async function listar(_, res) {
   try {
-    const usuarios = await Usuario.findAll();
+    const usuarios = await Usuario.findAll({
+      include: [
+        { model: Endereco, as: "enderecos" },
+        { model: Contato, as: "contatos" },
+      ],
+    });
     return res.status(200).send({ mensagem: usuarios });
   } catch (err) {
     console.log(err);

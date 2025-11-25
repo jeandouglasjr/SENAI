@@ -36,13 +36,13 @@ const Usuario = conexao.define(
 
 Usuario.associate = (models) => {
   // Um usuário tem muitos endereços (1..*)
-  Usuario.hasMany(models.Endereco, {
+  Usuario.hasOne(models.Endereco, {
     foreignKey: "id_usuario",
     as: "enderecos", // Nome da chave no JSON de entrada
   });
 
   // Um usuário tem muitos contatos (1..*)
-  Usuario.hasMany(models.Contato, {
+  Usuario.hasOne(models.Contato, {
     foreignKey: "id_usuario",
     as: "contatos", // Nome da chave no JSON de entrada
   });

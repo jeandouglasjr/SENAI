@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 // ativação do reconhecimento do dotenv (arquivo com variaveis de ambiente/credenciais)
 import "dotenv/config";
@@ -19,6 +20,7 @@ const app = express();
 
 // Permitir o uso de JSON no body
 app.use(express.json());
+app.use(cors());
 // Indicar o uso do arquivo de rotas
 app.use("/", routerUsuario);
 app.use("/", routerAnimal);
@@ -27,7 +29,7 @@ app.use("/", routerHistoricoAdocao);
 try {
   await conexao.authenticate();
   // Comando que adiciona novas colunas nas tabelas
-  // await conexao.sync({ alter: true })
+  await conexao.sync({ alter: true })
   // Comando que exclui a tabela e seus dados e cria a tabela sem dados
   // await conexao.sync({ force: true })
   console.log("Conectado com sucesso");
