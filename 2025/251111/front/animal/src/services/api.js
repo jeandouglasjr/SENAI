@@ -14,10 +14,9 @@ const api = axios.create({
 // Intercepta todas as requisições antes de serem enviadas
 api.interceptors.request.use(
   (config) => {
-    // Pega o token do localStorage ou do seu Auth Context
-    const token = localStorage.getItem('token'); 
+    // 💡 Mantenha a consistência com a chave de armazenamento 'userToken'
+    const token = localStorage.getItem('userToken'); 
     
-    // Se o token existir, adiciona-o ao cabeçalho Authorization
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -11,7 +11,7 @@ const Home = () => {
         <ul>
           <li><Link to="/usuario">Login / Cadastro</Link></li>
           <li><Link to="/animal">Ver Animais</Link></li>
-          <li><Link to="/adocao">Histórico de Adoção</Link></li>
+          <li><Link to="/historico_adocao">Histórico de Adoção</Link></li>
         </ul>
       </nav>
     </div>

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
 import Home from './pages/Home.jsx'
-import Adocao from './pages/Adocao.jsx'
+import Adocao from './pages/Historico_Adocao.jsx'
 import Usuario from './pages/Usuario.jsx'
 import Animal from './pages/Animal.jsx'
 
@@ -13,7 +13,7 @@ import Animal from './pages/Animal.jsx'
       element: <Home />
     },
     {
-      path: '/adocao',
+      path: '/historico_adocao',
       element: <Adocao />
     },
     {
