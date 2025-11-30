@@ -63,42 +63,35 @@ const Login = ({ setUsuarioLogado }) => {
           <Card className="shadow-lg">
             {" "}
             <Card.Header className="bg-primary text-white text-center">
-              <h2 className="mb-0">Acesso ao Sistema 🐾</h2>
-              {" "}
-            </Card.Header>
-            {" "}
+              <h2 className="mb-0">Acesso ao Sistema 🐾</h2>{" "}
+            </Card.Header>{" "}
             <Card.Body>
               {" "}
-              {status.error && <Alert variant="danger">{status.error}</Alert>}
-              {" "}
+              {status.error && (
+                <Alert variant="danger">{status.error}</Alert>
+              )}{" "}
               <Form onSubmit={handleSubmit}>
                 {" "}
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Email</Form.Label>
-                  {" "}
+                  <Form.Label>Email</Form.Label>{" "}
                   <Form.Control
                     type="email"
                     placeholder="Seu email cadastrado"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                  />
-                  {" "}
-                </Form.Group>
-                {" "}
+                  />{" "}
+                </Form.Group>{" "}
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Senha</Form.Label>
-                  {" "}
+                  <Form.Label>Senha</Form.Label>{" "}
                   <Form.Control
                     type="password"
                     placeholder="Sua senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                     required
-                  />
-                  {" "}
-                </Form.Group>
-                {" "}
+                  />{" "}
+                </Form.Group>{" "}
                 <div className="d-grid gap-2">
                   {" "}
                   <Button
@@ -108,25 +101,16 @@ const Login = ({ setUsuarioLogado }) => {
                   >
                     {" "}
                     {status.loading ? "Entrando..." : "Entrar"}{" "}
-                  </Button>
-                  {" "}
-                </div>
-                {" "}
-              </Form>
-              {" "}
-            </Card.Body>
-            {" "}
+                  </Button>{" "}
+                </div>{" "}
+              </Form>{" "}
+            </Card.Body>{" "}
             <Card.Footer className="text-center">
-              Não tem uma conta?{" "}
-              <Link to="/usuario/novo">Cadastre-se</Link>{" "}
-            </Card.Footer>
-            {" "}
-          </Card>
-          {" "}
-        </Col>
-        {" "}
-      </Row>
-      {" "}
+              Não tem uma conta? <Link to="/usuario/novo">Cadastre-se</Link>{" "}
+            </Card.Footer>{" "}
+          </Card>{" "}
+        </Col>{" "}
+      </Row>{" "}
     </Container>
   );
 };

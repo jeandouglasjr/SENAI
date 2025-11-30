@@ -60,7 +60,7 @@ const Usuario = () => {
       setUsuarios(usuariosFormatados);
     } catch (error) {
       console.error("Erro ao buscar usuário", error);
-      alert("Falha ao buscar usuário.");
+      setUsuarios([]);
     }
   };
 
@@ -186,7 +186,7 @@ const Usuario = () => {
             </Table>
           ) : (
             <p className="alert alert-info">
-              Nenhum usuário encontrado - Possível causa: erro na coexão com a
+              Nenhum usuário encontrado - Possível causa: erro na conexão com a
               base de dados.
             </p>
           )}
