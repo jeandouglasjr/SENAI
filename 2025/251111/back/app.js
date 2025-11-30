@@ -15,6 +15,7 @@ try {
 import { routerUsuario } from "./routes/usuario.js";
 import { routerAnimal } from "./routes/animal.js";
 import { routerHistoricoAdocao } from "./routes/historico_adocao.js";
+import { routerAuth } from "./routes/auth.js"; // Certifique-se de que o caminho está correto
 
 const app = express();
 
@@ -22,6 +23,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 // Indicar o uso do arquivo de rotas
+app.use("/", routerAuth);
 app.use("/", routerUsuario);
 app.use("/", routerAnimal);
 app.use("/", routerHistoricoAdocao);
@@ -29,7 +31,7 @@ app.use("/", routerHistoricoAdocao);
 try {
   await conexao.authenticate();
   // Comando que adiciona novas colunas nas tabelas
-  await conexao.sync({ alter: true })
+  await conexao.sync({ alter: true });
   // Comando que exclui a tabela e seus dados e cria a tabela sem dados
   // await conexao.sync({ force: true })
   console.log("Conectado com sucesso");

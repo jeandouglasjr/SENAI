@@ -1,13 +1,14 @@
 import { conexao } from "../database.js"; // IMPORTANTE: Sua instância Sequelize
-import { Usuario, Endereco, Contato } from "../models/index.js";
+import { Usuario, Endereco } from "../models/index.js"; // Assumindo que você tem um index.js para exportar os modelos
+
+// -----------------------------------------------------------------------
+// Funções de Listagem e Exclusão (Mantidas)
+// -----------------------------------------------------------------------
 
 async function listar(_, res) {
   try {
     const usuarios = await Usuario.findAll({
-      include: [
-        { model: Endereco, as: "enderecos" },
-        { model: Contato, as: "contatos" },
-      ],
+      include: [{ model: Endereco, as: "enderecos" }],
     });
     return res.status(200).send({ mensagem: usuarios });
   } catch (err) {
@@ -17,20 +18,15 @@ async function listar(_, res) {
 }
 
 async function listarPeloId(req, res) {
-  const { id } = req.params; // Desestruture o ID primeiro
+  const { id } = req.params;
 
-  // Agora sim, valide o ID
   if (isNaN(id) || !id) {
     return res.status(400).send({ mensagem: "ID inválido" });
   }
 
   try {
-    // Opcional: Inclua os dados relacionados ao buscar o usuário
     const usuario = await Usuario.findByPk(id, {
-      include: [
-        { model: Endereco, as: "enderecos" },
-        { model: Contato, as: "contatos" },
-      ],
+      include: [{ model: Endereco, as: "enderecos" }],
     });
 
     if (!usuario) {
@@ -47,57 +43,81 @@ async function listarPeloId(req, res) {
 async function excluir(req, res) {
   try {
     const { id } = req.params;
-    // DELETE = destroy
     await Usuario.destroy({ where: { id } });
-    res.status(204).send({ mensagem: "Usuario excluido com sucesso" });
+    // Corrigido para retornar 200/204, sem body na 204
+    return res.status(204).send();
   } catch (err) {
     console.log(err);
     res.status(500).send({ mensagem: "Erro interno" });
   }
 }
 
+// -----------------------------------------------------------------------
+// Função Criar (Cadastro Aninhado) - Implementada no NovoUsuario.jsx
+// -----------------------------------------------------------------------
+
 // CRIAR DADOS = create (com inclusão aninhada)
 async function criar(req, res) {
   try {
-    // A requisição agora contém todos os dados aninhados: Usuario, Enderecos e Contatos
+    // A requisição agora contém todos os dados aninhados: Usuario e Enderecos
+
     const dadosCompletos = req.body;
 
-    // 🚨 Validação Mínima:
+    // 🚨 Validação Mínima de campos obrigatórios:
     if (
       !dadosCompletos.nome ||
       !dadosCompletos.email ||
       !dadosCompletos.cpf ||
+      !dadosCompletos.fone ||
       !dadosCompletos.senha
     ) {
       return res.status(400).send({
-        mensagem: "Campos nome, email, cpf e senha do usuário são obrigatorios",
+        mensagem:
+          "Campos nome, email, cpf, fone e senha do usuário são obrigatorios.",
       });
+    }
+
+    // 💡 Opção de validação para garantir que ao menos 1 endereço exista
+    if (!dadosCompletos.enderecos || dadosCompletos.enderecos.length === 0) {
+      console.warn(
+        "Usuário sendo criado sem endereços. Isso pode ser permitido, mas é bom alertar."
+      );
     }
 
     // Use a opção 'include' para criar os dados aninhados
     const usuarioCriado = await Usuario.create(dadosCompletos, {
       include: [
-        { model: Endereco, as: "enderecos" }, // 'enderecos' deve corresponder ao 'as' da associação hasMany
-        { model: Contato, as: "contatos" }, // 'contatos' deve corresponder ao 'as' da associação hasMany
+        { model: Endereco, as: "enderecos" }, // 'enderecos' deve corresponder ao 'as' da associação
       ],
     });
 
-    // 201 Created é a resposta correta
-    return res.status(201).send({ usuario: usuarioCriado });
+    // 201 Created é a resposta correta para criação de recurso
+    return res.status(201).send({
+      mensagem: "Usuário cadastrado com sucesso!",
+      usuario: usuarioCriado,
+    });
   } catch (err) {
-    console.log(err);
-    // Em um ambiente real, você pode verificar o tipo de erro (ex: validação) e retornar 400
-    return res
-      .status(500)
-      .send({ mensagem: "Erro interno ao cadastrar usuário completo." });
+    console.error("Erro ao cadastrar usuário completo:", err);
+    // Em caso de erro de validação (ex: email duplicado), Sequelize pode retornar um erro específico
+    const status = err.name === "SequelizeUniqueConstraintError" ? 409 : 500;
+    return res.status(status).send({
+      mensagem:
+        status === 409
+          ? "Email, CPF ou Fone já cadastrados."
+          : "Erro interno ao cadastrar usuário completo.",
+    });
   }
 }
+
+// -----------------------------------------------------------------------
+// Função Atualizar (Mantida)
+// -----------------------------------------------------------------------
 
 // ATUALIZAR DADOS = update (Com tratamento de associações)
 async function atualizar(req, res) {
   const { id } = req.params;
-  // Captura todos os dados, incluindo os arrays enderecos e contatos
-  const { nome, email, cpf, senha, enderecos, contatos } = req.body;
+  // Captura todos os dados, incluindo os arrays enderecos
+  const { nome, email, cpf, fone, senha, enderecos } = req.body;
 
   // Inicia a transação. Se algo der errado, tudo é desfeito.
   const t = await conexao.transaction();
@@ -105,7 +125,7 @@ async function atualizar(req, res) {
   try {
     // 1. Atualizar a tabela principal (USUARIO)
     await Usuario.update(
-      { nome, email, cpf, senha },
+      { nome, email, cpf, fone, senha },
       { where: { id }, transaction: t }
     );
 
@@ -122,28 +142,12 @@ async function atualizar(req, res) {
       await Endereco.bulkCreate(novosEnderecos, { transaction: t });
     }
 
-    // 3. Tratar Contatos: Apagar os antigos e criar os novos (Estratégia de Sincronização Simples)
-    if (contatos && contatos.length > 0) {
-      // Remove todos os contatos antigos deste usuário
-      await Contato.destroy({ where: { id_usuario: id }, transaction: t });
-
-      // Mapeia e cria os novos contatos com a FK do usuário
-      const novosContatos = contatos.map((contato) => ({
-        ...contato,
-        id_usuario: id,
-      }));
-      await Contato.bulkCreate(novosContatos, { transaction: t });
-    }
-
-    // 4. Confirma a transação (salva tudo no banco)
+    // 3. Confirma a transação (salva tudo no banco)
     await t.commit();
 
     // 5. Busca o registro atualizado (com as associações) para retornar na resposta
     const usuarioAtualizado = await Usuario.findByPk(id, {
-      include: [
-        { model: Endereco, as: "enderecos" },
-        { model: Contato, as: "contatos" },
-      ],
+      include: [{ model: Endereco, as: "enderecos" }],
     });
 
     return res.status(200).send({
@@ -159,5 +163,9 @@ async function atualizar(req, res) {
       .send({ mensagem: "Erro interno ao atualizar usuário completo." });
   }
 }
+
+// -----------------------------------------------------------------------
+// Exportação
+// -----------------------------------------------------------------------
 
 export { listar, listarPeloId, excluir, criar, atualizar };

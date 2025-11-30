@@ -1,3 +1,4 @@
+// src/routes/usuario.js
 import express from "express";
 const routerUsuario = express.Router();
 
@@ -8,11 +9,15 @@ import {
   criar,
   atualizar,
 } from "../controllers/usuario.js";
+// 💡 Importe o middleware
+import { verificarToken } from "../middleware/auth.js";
 
-routerUsuario.get("/usuario", listar);
-routerUsuario.get("/usuario/:id", listarPeloId);
-routerUsuario.delete("/usuario/:id", excluir);
+// A lista de usuários geralmente precisa de autenticação para ser acessada
+routerUsuario.get("/usuario", verificarToken, listar);
+routerUsuario.get("/usuario/:id", verificarToken, listarPeloId);
+routerUsuario.delete("/usuario/:id", verificarToken, excluir);
+// O cadastro pode ser público, mas você pode protegê-lo se for só para admins
 routerUsuario.post("/usuario", criar);
-routerUsuario.put("/usuario/:id", atualizar);
+routerUsuario.put("/usuario/:id", verificarToken, atualizar);
 
 export { routerUsuario };

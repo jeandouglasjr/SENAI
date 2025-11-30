@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { conexao } from "../database.js";
+import bcrypt from "bcrypt"; // 💡 Importar bcrypt
 
-// conexao.define('Nome da tabela', { objeto com as colunas da tabela e seus tipos })
 const Usuario = conexao.define(
   "Usuario",
   {
@@ -17,10 +17,17 @@ const Usuario = conexao.define(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true, // 💡 Garante que emails sejam únicos
     },
     cpf: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true, // 💡 Garante que CPFs sejam únicos
+    },
+    fone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true, // 💡 Garante que FONEs sejam únicos
     },
     senha: {
       type: DataTypes.STRING,
@@ -28,24 +35,36 @@ const Usuario = conexao.define(
     },
   },
   {
-    createdAt: "data_cadastro", // Criar coluna de criação com o nome 'data_cadastro'
+    createdAt: "data_cadastro",
     freezeTableName: true,
     updatedAt: true,
+    // 💡 HOOK PARA HASH DA SENHA ANTES DE SALVAR
+    hooks: {
+      beforeCreate: async (usuario) => {
+        if (usuario.senha) {
+          // Gera o hash com custo de 10 (padrão seguro)
+          const salt = await bcrypt.genSalt(10);
+          usuario.senha = await bcrypt.hash(usuario.senha, salt);
+        }
+      },
+      // Opcional: Hook para atualizar a senha se ela for modificada
+      beforeUpdate: async (usuario) => {
+        if (usuario.changed("senha") && usuario.senha) {
+          const salt = await bcrypt.genSalt(10);
+          usuario.senha = await bcrypt.hash(usuario.senha, salt);
+        }
+      },
+    },
   }
 );
 
 Usuario.associate = (models) => {
   // Um usuário tem muitos endereços (1..*)
   Usuario.hasOne(models.Endereco, {
+    // 💡 CORRIGIDO: hasOne -> hasMany
     foreignKey: "id_usuario",
-    as: "enderecos", // Nome da chave no JSON de entrada
-  });
-
-  // Um usuário tem muitos contatos (1..*)
-  Usuario.hasOne(models.Contato, {
-    foreignKey: "id_usuario",
-    as: "contatos", // Nome da chave no JSON de entrada
-  });
+    as: "enderecos",
+  }); // Um usuário tem um endereço (1..1)
 };
 
 export { Usuario };
