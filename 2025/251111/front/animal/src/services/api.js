@@ -1,6 +1,5 @@
-// src/services/api.js
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom"; // REMOVIDO: Hooks não podem ser usados aqui
 
 const API_URL = "http://localhost:3000";
 
@@ -31,10 +30,10 @@ api.interceptors.response.use(
   (error) => {
     // Se receber 401 (Não Autorizado) ou 403 (Proibido), pode ser token expirado
     if (error.response && [401, 403].includes(error.response.status)) {
-      console.error("Sessão expirada. Redirecionando para login...");
-      navigate("/login");
-
-      // Você pode forçar o logout e redirecionar aqui
+      console.error(
+        "Sessão expirada ou acesso negado. Redirecionamento deve ser tratado pelo componente ou globalmente."
+      );
+      // Se necessário, o redirecionamento global pode ser forçado aqui, mas sem o useNavigate:
       // localStorage.removeItem('userToken');
       // window.location.href = '/login';
     }
