@@ -165,10 +165,9 @@ const NovoUsuario = () => {
                 <h3>Dados Pessoais</h3>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formNome">
-                    <Form.Label>Nome Completo</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Seu nome"
+                      placeholder="Nome Completo"
                       name="nome"
                       value={usuario.nome}
                       onChange={handleUsuarioChange}
@@ -176,10 +175,9 @@ const NovoUsuario = () => {
                     />
                   </Form.Group>
                   <Form.Group as={Col} controlId="formCPF">
-                    <Form.Label>CPF</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="000.000.000-00"
+                      placeholder="CPF 000.000.000-00"
                       name="cpf"
                       value={usuario.cpf}
                       onChange={handleUsuarioChange}
@@ -189,10 +187,9 @@ const NovoUsuario = () => {
                 </Row>
                 <Row className="mb-4">
                   <Form.Group as={Col} controlId="formFone">
-                    <Form.Label>Fone</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="(48) 90000-0000"
+                      placeholder="Fone (48) 90000-0000"
                       name="fone"
                       value={usuario.fone}
                       onChange={handleUsuarioChange}
@@ -200,10 +197,9 @@ const NovoUsuario = () => {
                     />
                   </Form.Group>
                   <Form.Group as={Col} controlId="formEmail">
-                    <Form.Label>Email</Form.Label>
                     <Form.Control
                       type="email"
-                      placeholder="email@exemplo.com"
+                      placeholder="Email email@exemplo.com"
                       name="email"
                       value={usuario.email}
                       onChange={handleUsuarioChange}
@@ -211,10 +207,9 @@ const NovoUsuario = () => {
                     />
                   </Form.Group>
                   <Form.Group as={Col} controlId="formSenha">
-                    <Form.Label>Senha</Form.Label>
                     <Form.Control
                       type="password"
-                      placeholder="Sua senha (mínimo 6 caracteres)"
+                      placeholder="Sua senha ******"
                       name="senha"
                       value={usuario.senha}
                       onChange={handleUsuarioChange}
@@ -232,7 +227,6 @@ const NovoUsuario = () => {
                     <Row>
                       <Col md={6}>
                         <Form.Group controlId={`endLogradouro${index}`}>
-                          <Form.Label>Logradouro</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Rua, Avenida, etc."
@@ -245,7 +239,6 @@ const NovoUsuario = () => {
                       </Col>
                       <Col md={2}>
                         <Form.Group controlId={`endNumero${index}`}>
-                          <Form.Label>Número</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Nº"
@@ -257,10 +250,9 @@ const NovoUsuario = () => {
                       </Col>
                       <Col md={4}>
                         <Form.Group controlId={`endComplemento${index}`}>
-                          <Form.Label>Complemento</Form.Label>
                           <Form.Control
                             type="text"
-                            placeholder="Complemento"
+                            placeholder="Complemento Casa, Ap, Bloco..."
                             name="complemento"
                             value={endereco.complemento}
                             onChange={(e) => handleEnderecoChange(index, e)}
@@ -269,10 +261,9 @@ const NovoUsuario = () => {
                       </Col>
                       <Col md={4}>
                         <Form.Group controlId={`endCEP${index}`}>
-                          <Form.Label>CEP</Form.Label>
                           <Form.Control
                             type="text"
-                            placeholder="00000-000"
+                            placeholder="CEP 88130-300"
                             name="cep"
                             value={endereco.cep}
                             onChange={(e) => handleEnderecoChange(index, e)}
@@ -284,7 +275,6 @@ const NovoUsuario = () => {
                       {/* 💡 CAMPO BAIRRO ADICIONADO E OBRIGATÓRIO */}
                       <Col md={4}>
                         <Form.Group controlId={`endBairro${index}`}>
-                          <Form.Label>Bairro</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Bairro"
@@ -297,7 +287,6 @@ const NovoUsuario = () => {
                       </Col>
                       <Col md={4}>
                         <Form.Group controlId={`endMunicipio${index}`}>
-                          <Form.Label>Município</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Município"
@@ -310,7 +299,6 @@ const NovoUsuario = () => {
                       </Col>
                       <Col md={2}>
                         <Form.Group controlId={`endUF${index}`}>
-                          <Form.Label>UF</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="UF"

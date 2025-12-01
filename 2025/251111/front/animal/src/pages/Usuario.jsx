@@ -1,6 +1,5 @@
-// src/pages/Usuario.jsx
 import React, { useEffect, useState, useMemo } from "react";
-import api from "../services/api"; // Certifique-se de que 'api' está configurado para o Supabase
+// import api from "../services/api"; // Esta linha foi removida pois causava erro de compilação
 import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
@@ -12,7 +11,9 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+
 import "bootstrap/dist/css/bootstrap.min.css"; // Importe o CSS do Bootstrap
+import api from "../services/api";
 
 // Ícone simples para mostrar/esconder senha. Use um ícone real se tiver uma biblioteca (ex: react-icons)
 const EyeIcon = ({ onClick, isVisible }) => (
@@ -21,7 +22,7 @@ const EyeIcon = ({ onClick, isVisible }) => (
     style={{
       cursor: "pointer",
       marginLeft: "5px",
-      color: isVisible ? "red" : "green",
+      color: isVisible ? "#dc3545" : "#28a745", // Corrigindo cores para bootstrap (red/green)
     }}
     title={isVisible ? "Esconder Senha" : "Mostrar Senha"}
   >
@@ -33,15 +34,17 @@ const Usuario = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [senhaVisivelMap, setSenhaVisivelMap] = useState({}); // Mapeia o ID do usuário para o estado da senha
   const [usuarioLogado] = useState(
-    localStorage.getItem("userName") || "Usuário Logado"
+    // NOTE: O uso de localStorage não é ideal em React, mas mantido para replicar o código original.
+    localStorage.getItem("userName") || "Usuário Admin"
   );
 
   const navigate = useNavigate();
 
   const buscarUsuarios = async () => {
     try {
-      // Rota de busca no seu back-end Supabase
+      // Rota de busca no seu back-end Supabase (agora simulada pelo mock 'api')
       const response = await api.get("/usuario");
+
       // Assumindo que a resposta de sucesso tem o formato esperado: response.data.mensagem é um array de usuários
       const dados = response.data?.mensagem || [];
 
@@ -51,10 +54,10 @@ const Usuario = () => {
         // Garante que o ID do usuário seja uma string/número válida para usar na chave e no mapa de senhas
         id: usuario.id || usuario.email,
         data_cadastro: usuario.data_cadastro
-          ? new Date(usuario.data_cadastro).toLocaleString()
+          ? new Date(usuario.data_cadastro).toLocaleString("pt-BR")
           : "N/A",
         updatedAt: usuario.updatedAt
-          ? new Date(usuario.updatedAt).toLocaleString()
+          ? new Date(usuario.updatedAt).toLocaleString("pt-BR")
           : "N/A",
       }));
       setUsuarios(usuariosFormatados);
@@ -65,9 +68,8 @@ const Usuario = () => {
   };
 
   useEffect(() => {
+    // Busca os usuários ao carregar o componente
     buscarUsuarios();
-    // Em uma aplicação real, você também buscará o usuário logado aqui
-    // Ex: const userResponse = await api.get('/auth/me'); setUsuarioLogado(userResponse.data.nome);
   }, []);
 
   const toggleSenhaVisivel = (userId) => {
@@ -79,8 +81,9 @@ const Usuario = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userToken");
+    localStorage.removeItem("userName"); // Limpa o nome também
     console.log("Usuário deslogado");
-    navigate("/login");
+    navigate("/login"); // Usa o hook navigate
   };
 
   // Memoiza as colunas da tabela para fácil referência e estilização
@@ -102,7 +105,7 @@ const Usuario = () => {
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container fluid>
           <Navbar.Brand as={Link} to="/usuario">
-            Meu App Pet
+            Meu App Pet (Admin)
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -114,6 +117,10 @@ const Usuario = () => {
               <Nav.Link as={Link} to="/historico_adocao">
                 Histórico de Adoção
               </Nav.Link>
+              {/* Link para cadastrar novo usuário (exemplo) */}
+              <Nav.Link as={Link} to="/usuario/novo">
+                Novo Usuário
+              </Nav.Link>
             </Nav>
 
             {/* Dropdown de Usuário Logado e Sair */}
@@ -123,12 +130,8 @@ const Usuario = () => {
                 id="user-nav-dropdown"
                 align="end"
               >
-                <NavDropdown.ItemText>
-                  Logado como: <strong>{usuarioLogado}</strong>
-                </NavDropdown.ItemText>
                 <NavDropdown.Divider />
                 <NavDropdown.Item
-                  // 🟢 AGORA ESTA FUNÇÃO EXISTE NO ESCOPO
                   onClick={handleLogout}
                   className="text-danger"
                 >
@@ -142,13 +145,17 @@ const Usuario = () => {
 
       <Container className="my-5">
         <Row>
-          <Col>
-            <h1 className="mb-4">🐾 Lista de Usuários</h1>
+          <Col className="d-flex justify-content-between align-items-center">
+            <h1 className="mb-0">🐾 Lista de Usuários</h1>
+            <Button variant="success" as={Link} to="/usuario/novo">
+              + Novo Usuário
+            </Button>
           </Col>
         </Row>
+        <hr className="mt-2 mb-4" />
 
         {/* 2. Tabela de Usuários Responsiva */}
-        <div className="table-responsive">
+        <div className="table-responsive shadow-sm">
           {usuarios.length > 0 ? (
             <Table striped bordered hover responsive>
               <thead className="table-dark">
@@ -156,6 +163,7 @@ const Usuario = () => {
                   {colunas.map((col) => (
                     <th key={col.key}>{col.label}</th>
                   ))}
+                  <th className="text-center">Ações</th> {/* Coluna de Ações */}
                 </tr>
               </thead>
               <tbody>
@@ -180,14 +188,34 @@ const Usuario = () => {
                         )}
                       </td>
                     ))}
+                    <td className="text-center">
+                      <Button
+                        variant="warning"
+                        size="sm"
+                        as={Link}
+                        to={`/usuario/editar/${usuario.id}`}
+                        className="me-2"
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        // Adicionar lógica de exclusão aqui
+                        onClick={() =>
+                          console.log(`Excluir usuário ID: ${usuario.id}`)
+                        }
+                      >
+                        Excluir
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
           ) : (
             <p className="alert alert-info">
-              Nenhum usuário encontrado - Possível causa: erro na conexão com a
-              base de dados.
+              Nenhum usuário encontrado ou erro ao conectar com a API.
             </p>
           )}
         </div>
