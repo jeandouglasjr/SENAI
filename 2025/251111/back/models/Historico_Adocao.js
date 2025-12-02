@@ -17,9 +17,9 @@ const Historico_Adocao = conexao.define(
             type: DataTypes.DATE,
             allowNull: false,
         },
-        observacoes: {
+        observacao: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true
         },
         // A definição da chave estrangeira está correta no modelo
         id_usuario: {

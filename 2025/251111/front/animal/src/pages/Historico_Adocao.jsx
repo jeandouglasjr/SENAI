@@ -37,7 +37,7 @@ const HistoricoAdocao = () => {
       // Rota simulada: /historico_adocao
       const response = await api.get("/historico_adocao");
       // Assumindo que a resposta de sucesso tem o formato esperado: response.data.mensagem é um array
-      const dados = response.data?.mensagem || [];
+      const dados = response.data?.historicos || [];
 
       // Mapeia os dados, formata datas e garante IDs
       const historicosFormatados = dados.map((hist) => ({
@@ -47,7 +47,7 @@ const HistoricoAdocao = () => {
           ? new Date(hist.data_adocao).toLocaleDateString("pt-BR")
           : "N/A",
         // Campos que o back-end deve fornecer: animal_nome, adotante_nome
-        animal_nome: hist.animal?.nome || "Animal Desconhecido",
+        animal_nome: hist.animal_adotado?.nome || "Animal Desconhecido",
         adotante_nome: hist.adotante?.nome || "Adotante Desconhecido",
       }));
 

@@ -10,16 +10,15 @@ import {
   Card,
   InputGroup,
 } from "react-bootstrap";
-import api from "../services/api"; // Assumindo que esta API é configurada
+import api from "../services/api"; // O arquivo api.js foi criado em ../services/api
 
 const NovoHistoricoAdocao = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    animal_id: "",
-    adotante_id: "",
+    id_animal: "",
+    id_usuario: "",
     data_adocao: new Date().toISOString().substring(0, 10), // Data atual no formato YYYY-MM-DD
-    status: "Concluída", // Padrão
-    observacao: "",
+    observacao: "", // Nome do campo no estado: observacao (singular)
   });
 
   const [animais, setAnimais] = useState([]); // Lista de animais para o Select
@@ -75,7 +74,7 @@ const NovoHistoricoAdocao = () => {
     setStatus({ loading: true, error: null, success: null });
 
     // Validação mínima
-    if (!formData.animal_id || !formData.adotante_id) {
+    if (!formData.id_animal || !formData.id_usuario) {
       setStatus({
         loading: false,
         error: "Selecione o Animal e o Adotante.",
@@ -85,12 +84,12 @@ const NovoHistoricoAdocao = () => {
     }
 
     try {
+      // Usando formData.observacao (singular), corrigido na iteração anterior.
       const payload = {
-        animal_id: parseInt(formData.animal_id), // Garante que seja número, se o back-end esperar isso
-        adotante_id: parseInt(formData.adotante_id), // Garante que seja número
+        id_animal: parseInt(formData.id_animal), // Garante que seja número
+        id_usuario: parseInt(formData.id_usuario), // Garante que seja número
         data_adocao: formData.data_adocao,
-        status: formData.status,
-        observacao: formData.observacoes,
+        observacao: formData.observacao, // Usa o nome correto do state (singular)
       };
 
       const response = await api.post("/historico_adocao", payload);
@@ -137,8 +136,8 @@ const NovoHistoricoAdocao = () => {
                   <Form.Group as={Col} controlId="formAnimal">
                     <Form.Label>Animal Adotado</Form.Label>
                     <Form.Select
-                      name="animal_id"
-                      value={formData.animal_id}
+                      name="id_animal"
+                      value={formData.id_animal}
                       onChange={handleChange}
                       required
                       disabled={animais.length === 0}
@@ -161,8 +160,8 @@ const NovoHistoricoAdocao = () => {
                   <Form.Group as={Col} controlId="formAdotante">
                     <Form.Label>Adotante (Usuário)</Form.Label>
                     <Form.Select
-                      name="adotante_id"
-                      value={formData.adotante_id}
+                      name="id_usuario"
+                      value={formData.id_usuario}
                       onChange={handleChange}
                       required
                       disabled={adotantes.length === 0}
@@ -194,30 +193,15 @@ const NovoHistoricoAdocao = () => {
                       required
                     />
                   </Form.Group>
-
-                  {/* Campo Status */}
-                  <Form.Group as={Col} controlId="formStatus">
-                    <Form.Label>Status</Form.Label>
-                    <Form.Select
-                      name="status"
-                      value={formData.status}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="Concluída">Concluída</option>
-                      <option value="Pendente">Pendente</option>
-                      <option value="Cancelada">Cancelada</option>
-                    </Form.Select>
-                  </Form.Group>
                 </Row>
 
                 {/* Campo Observação */}
-                <Form.Group controlId="formObservacoes" className="mb-4">
+                <Form.Group controlId="formObservacao" className="mb-4">
                   <Form.Label>Observação</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    name="observacoes"
+                    name="observacao" 
                     value={formData.observacao}
                     onChange={handleChange}
                     placeholder="Detalhes importantes sobre a adoção..."

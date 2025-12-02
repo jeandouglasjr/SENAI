@@ -7,7 +7,7 @@ import {
   listarPeloId,
   excluir,
   criar,
-  atualizar,
+  editar,
 } from "../controllers/usuario.js";
 // 💡 Importe o middleware
 import { verificarToken } from "../middleware/auth.js";
@@ -18,6 +18,6 @@ routerUsuario.get("/usuario/:id", verificarToken, listarPeloId);
 routerUsuario.delete("/usuario/:id", verificarToken, excluir);
 // O cadastro pode ser público, mas você pode protegê-lo se for só para admins
 routerUsuario.post("/usuario", criar);
-routerUsuario.put("/usuario/:id", verificarToken, atualizar);
+routerUsuario.put("/usuario/:id", verificarToken, editar);
 
 export { routerUsuario };

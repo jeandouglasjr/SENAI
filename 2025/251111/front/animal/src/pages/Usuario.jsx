@@ -67,6 +67,22 @@ const Usuario = () => {
     }
   };
 
+  const excluirUsuario = async (id) => {
+    try{
+      console.log('excluindo', id)
+      const respostaConfirm = confirm("Confirma a exclusão do usuário?")
+      console.log('respostaConfirm', respostaConfirm)
+      if (respostaConfirm) {
+        await api.delete(`/usuario/${id}`);
+        alert(`Usuário excluído com sucesso.`)
+        buscarUsuarios();
+      }
+    }
+    catch (err) {
+      alert(`Usuário não pôde ser excluído (provávelmente já adotou)`)
+    }
+  }
+
   useEffect(() => {
     // Busca os usuários ao carregar o componente
     buscarUsuarios();
@@ -202,9 +218,7 @@ const Usuario = () => {
                         variant="danger"
                         size="sm"
                         // Adicionar lógica de exclusão aqui
-                        onClick={() =>
-                          console.log(`Excluir usuário ID: ${usuario.id}`)
-                        }
+                        onClick={() => excluirUsuario(usuario.id)}
                       >
                         Excluir
                       </Button>

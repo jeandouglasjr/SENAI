@@ -110,11 +110,11 @@ async function criar(req, res) {
 }
 
 // -----------------------------------------------------------------------
-// Função Atualizar (Mantida)
+// Função Editar (Mantida)
 // -----------------------------------------------------------------------
 
-// ATUALIZAR DADOS = update (Com tratamento de associações)
-async function atualizar(req, res) {
+// EDITAR DADOS = update (Com tratamento de associações)
+async function editar(req, res) {
   const { id } = req.params;
   // Captura todos os dados, incluindo os arrays enderecos
   const { nome, email, cpf, fone, senha, enderecos } = req.body;
@@ -123,7 +123,7 @@ async function atualizar(req, res) {
   const t = await conexao.transaction();
 
   try {
-    // 1. Atualizar a tabela principal (USUARIO)
+    // 1. Editar a tabela principal (USUARIO)
     await Usuario.update(
       { nome, email, cpf, fone, senha },
       { where: { id }, transaction: t }
@@ -145,14 +145,14 @@ async function atualizar(req, res) {
     // 3. Confirma a transação (salva tudo no banco)
     await t.commit();
 
-    // 5. Busca o registro atualizado (com as associações) para retornar na resposta
-    const usuarioAtualizado = await Usuario.findByPk(id, {
+    // 5. Busca o registro editado (com as associações) para retornar na resposta
+    const usuarioEditado = await Usuario.findByPk(id, {
       include: [{ model: Endereco, as: "enderecos" }],
     });
 
     return res.status(200).send({
-      mensagem: "Usuário e dados relacionados atualizados com sucesso.",
-      usuario: usuarioAtualizado,
+      mensagem: "Usuário e dados relacionados editados com sucesso.",
+      usuario: usuarioEditado,
     });
   } catch (err) {
     // Em caso de erro, desfaz todas as operações do banco
@@ -160,7 +160,7 @@ async function atualizar(req, res) {
     console.error(err);
     return res
       .status(500)
-      .send({ mensagem: "Erro interno ao atualizar usuário completo." });
+      .send({ mensagem: "Erro interno ao editar usuário completo." });
   }
 }
 
@@ -168,4 +168,4 @@ async function atualizar(req, res) {
 // Exportação
 // -----------------------------------------------------------------------
 
-export { listar, listarPeloId, excluir, criar, atualizar };
+export { listar, listarPeloId, excluir, criar, editar };

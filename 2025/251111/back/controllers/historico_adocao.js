@@ -8,7 +8,7 @@ async function listarHistorico(_, res) {
   try {
     // Exemplo de como usar include para trazer dados de outras tabelas
     const historicos = await Historico_Adocao.findAll({
-      // include: [{ model: Usuario, as: 'adotante' }, { model: Animal, as: 'animal_adotado' }]
+      include: [{ model: Usuario, as: 'adotante' }, { model: Animal, as: 'animal_adotado' }]
     });
     return res.status(200).send({ historicos });
   } catch (err) {
@@ -20,7 +20,7 @@ async function listarHistorico(_, res) {
 // Função para criar um novo registro
 async function criarHistorico(req, res) {
   try {
-    const { data_adocao, observacoes, id_usuario, id_animal } = req.body;
+    const { data_adocao, observacao, id_usuario, id_animal } = req.body;
 
     // Validação básica (adapte conforme necessário)
     if (!data_adocao || !id_usuario || !id_animal) {
@@ -31,7 +31,7 @@ async function criarHistorico(req, res) {
 
     const novoRegistro = await Historico_Adocao.create({
       data_adocao,
-      observacoes: observacoes || "N/A", // Se observacoes não for obrigatório, use valor padrão
+      observacao: observacao || "N/A", // Se observacao não for obrigatório, use valor padrão
       id_usuario,
       id_animal,
     });
