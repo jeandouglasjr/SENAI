@@ -221,7 +221,7 @@ const NovoUsuario = () => {
                 <hr className="my-4" />
 
                 {/* --- Seção 2: Endereços --- */}
-                <h3>Endereços ({enderecos.length})</h3>
+                <h3>Endereços</h3>
                 {enderecos.map((endereco, index) => (
                   <Card key={index} className="mb-3 p-3 bg-light">
                     <Row>
@@ -272,7 +272,6 @@ const NovoUsuario = () => {
                       </Col>
                     </Row>
                     <Row className="mt-2">
-                      {/* 💡 CAMPO BAIRRO ADICIONADO E OBRIGATÓRIO */}
                       <Col md={4}>
                         <Form.Group controlId={`endBairro${index}`}>
                           <Form.Control
@@ -281,7 +280,7 @@ const NovoUsuario = () => {
                             name="bairro"
                             value={endereco.bairro}
                             onChange={(e) => handleEnderecoChange(index, e)}
-                            required // Bairro obrigatório
+                            required
                           />
                         </Form.Group>
                       </Col>

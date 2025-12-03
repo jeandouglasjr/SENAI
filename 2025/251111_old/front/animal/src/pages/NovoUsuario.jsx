@@ -1,6 +1,6 @@
-// src/pages/EditarUsuario.jsx
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+// src/pages/NovoUsuario.jsx
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
   Form,
@@ -9,24 +9,18 @@ import {
   Col,
   Alert,
   Card,
-  Spinner,
 } from "react-bootstrap";
 import api from "../services/api";
 
-const EditarUsuario = () => {
-  const { id } = useParams();
+const NovoUsuario = () => {
   const navigate = useNavigate();
-  const [loadingInitial, setLoadingInitial] = useState(true);
-
-  // 2. Estados Principais (Usuário, Endereços, Contatos)
   const [usuario, setUsuario] = useState({
     nome: "",
     email: "",
     cpf: "",
     senha: "",
-    fone: "",
   });
-
+  // 💡 ATUALIZADO: Adicionando 'bairro' ao estado inicial
   const [enderecos, setEnderecos] = useState([
     {
       logradouro: "",
@@ -38,89 +32,12 @@ const EditarUsuario = () => {
       bairro: "",
     },
   ]);
-
-  // 💡 ESTADO DE CONTATOS RE-ADICIONADO
   const [contatos, setContatos] = useState([{ tipo: "Telefone", valor: "" }]);
-
   const [status, setStatus] = useState({
     loading: false,
     error: null,
     success: null,
   });
-
-  // 3. Efeito para carregar os dados do usuário
-  useEffect(() => {
-    const fetchUsuario = async () => {
-      try {
-        setLoadingInitial(true);
-        const response = await api.get(`/usuario/${id}`);
-        const data = response.data;
-
-        // Atualiza o estado principal do usuário
-        setUsuario({
-          nome: data.nome || "",
-          email: data.email || "",
-          cpf: data.cpf || "",
-          fone: data.fone || "",
-          senha: "", // Não preencher o campo de senha
-        });
-
-        // Mapeia e atualiza Endereços
-        if (data.enderecos && data.enderecos.length > 0) {
-          setEnderecos(
-            data.enderecos.map((end) => ({
-              logradouro: end.logradouro || "",
-              numero: end.numero || "",
-              complemento: end.complemento || "",
-              municipio: end.municipio || "",
-              uf: end.uf || "",
-              cep: end.cep || "",
-              bairro: end.bairro || "",
-            }))
-          );
-        } else {
-          setEnderecos([
-            {
-              logradouro: "",
-              numero: "",
-              complemento: "",
-              municipio: "",
-              uf: "",
-              cep: "",
-              bairro: "",
-            },
-          ]);
-        }
-
-        // 💡 LÓGICA DE CARREGAMENTO DE CONTATOS ADICIONADA
-        if (data.contatos && data.contatos.length > 0) {
-          setContatos(
-            data.contatos.map((cont) => ({
-              tipo: cont.tipo || "Telefone",
-              valor: cont.valor || "",
-            }))
-          );
-        } else {
-          setContatos([{ tipo: "Telefone", valor: "" }]);
-        }
-      } catch (error) {
-        console.error(
-          "Erro ao carregar dados do usuário",
-          error.response || error
-        );
-        setStatus({
-          loading: false,
-          error:
-            "Erro ao carregar dados do usuário. ID inválido ou problema de conexão.",
-          success: null,
-        });
-      } finally {
-        setLoadingInitial(false);
-      }
-    };
-
-    fetchUsuario();
-  }, [id]);
 
   // --- Handlers do Formulário Principal (Usuário) ---
   const handleUsuarioChange = (e) => {
@@ -139,6 +56,7 @@ const EditarUsuario = () => {
   };
 
   const addEndereco = () => {
+    // 💡 ATUALIZADO: Adicionando 'bairro' ao novo endereço
     setEnderecos([
       ...enderecos,
       {
@@ -158,7 +76,7 @@ const EditarUsuario = () => {
     setEnderecos(novosEnderecos);
   };
 
-  // 💡 HANDLERS PARA CONTATOS RE-ADICIONADOS
+  // --- Handlers para Contatos ---
   const handleContatoChange = (index, e) => {
     const novosContatos = contatos.map((contato, i) => {
       if (i === index) {
@@ -183,17 +101,17 @@ const EditarUsuario = () => {
     e.preventDefault();
     setStatus({ loading: true, error: null, success: null });
 
-    // Monta o payload (mesma lógica de filtro do NovoUsuario.jsx)
+    // Monta o payload conforme a estrutura esperada pelo back-end (controller/usuario.js:criar)
     const payload = {
       ...usuario,
+      // 💡 ATUALIZADO: Filtra e valida se o endereço tem campos essenciais, incluindo 'bairro'
       enderecos: enderecos.filter(
         (addr) => addr.logradouro && addr.municipio && addr.uf && addr.bairro
       ),
-      // 💡 FILTRO DE CONTATOS RE-ADICIONADO
       contatos: contatos.filter((cont) => cont.valor),
     };
 
-    // Nova Validação Front-end: Garante que haja pelo menos 1 endereço completo
+    // 💡 Nova Validação Front-end: Garante que haja pelo menos 1 endereço completo
     if (payload.enderecos.length === 0) {
       setStatus({
         loading: false,
@@ -204,75 +122,37 @@ const EditarUsuario = () => {
       return;
     }
 
-    // Validação da Senha
-    if (usuario.senha === "") {
-      // Remove a propriedade senha do payload se estiver vazia (para não sobrescrever no backend)
-      delete payload.senha;
-    }
-
     try {
-      // 4. Usa api.put para o endpoint de edição
-      const response = await api.put(`/usuario/${id}`, payload);
+      const response = await api.post("/usuario", payload);
       setStatus({
         loading: false,
         error: null,
-        success: "Usuário atualizado com sucesso!",
+        success: "Usuário cadastrado com sucesso!",
       });
-      console.log("Usuário Atualizado:", response.data);
+      console.log("Usuário Criado:", response.data);
 
       setTimeout(() => {
-        navigate("/usuario"); // Volta para a lista após o sucesso
+        navigate("/usuario");
       }, 1500);
     } catch (error) {
-      console.error("Erro ao atualizar usuário", error.response || error);
+      console.error("Erro ao cadastrar usuário", error.response || error);
       setStatus({
         loading: false,
         error:
           error.response?.data?.mensagem ||
-          "Erro ao atualizar. Verifique a conexão com a API e os dados.",
+          "Erro ao cadastrar. Verifique a conexão com a API e os dados.",
         success: null,
       });
     }
   };
 
-  // Mostra um spinner enquanto carrega os dados iniciais
-  if (loadingInitial) {
-    return (
-      <Container className="my-5 text-center">
-        <Spinner animation="border" role="status" variant="primary">
-          <span className="visually-hidden">Carregando...</span>
-        </Spinner>
-        <p className="mt-2">Carregando dados do usuário...</p>
-      </Container>
-    );
-  }
-
-  // Se o carregamento inicial falhou e há um erro
-  if (status.error && !status.loading && !loadingInitial) {
-    return (
-      <Container className="my-5">
-        <Alert variant="danger" className="text-center">
-          {status.error}
-          <div className="mt-2">
-            <Button as={Link} to="/usuario" variant="danger">
-              Voltar para a Lista
-            </Button>
-          </div>
-        </Alert>
-      </Container>
-    );
-  }
-
-  // Formulário Principal
   return (
     <Container className="my-5">
       <Row className="justify-content-md-center">
         <Col md={10} lg={8}>
           <Card className="shadow-lg">
-            <Card.Header className="bg-warning text-dark">
-              <h2 className="mb-0">
-                Editar Usuário: **{usuario.nome || "ID " + id}** 📝
-              </h2>
+            <Card.Header className="bg-primary text-white">
+              <h2 className="mb-0">Cadastrar Novo Usuário 🐾</h2>
             </Card.Header>
             <Card.Body>
               {status.error && <Alert variant="danger">{status.error}</Alert>}
@@ -281,7 +161,7 @@ const EditarUsuario = () => {
               )}
 
               <Form onSubmit={handleSubmit}>
-                {/* --- Seção 1: Dados Pessoais --- */}
+                {/* ... (Dados Pessoais mantidos) ... */}
                 <h3>Dados Pessoais</h3>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formNome">
@@ -326,16 +206,26 @@ const EditarUsuario = () => {
                       required
                     />
                   </Form.Group>
+                  <Form.Group as={Col} controlId="formSenha">
+                    <Form.Control
+                      type="password"
+                      placeholder="Sua senha ******"
+                      name="senha"
+                      value={usuario.senha}
+                      onChange={handleUsuarioChange}
+                      required
+                    />
+                  </Form.Group>
                 </Row>
 
                 <hr className="my-4" />
 
                 {/* --- Seção 2: Endereços --- */}
-                <h3>Endereço</h3>
+                <h3>Endereços ({enderecos.length})</h3>
                 {enderecos.map((endereco, index) => (
                   <Card key={index} className="mb-3 p-3 bg-light">
                     <Row>
-                      <Col md={6} className="mb-2">
+                      <Col md={6}>
                         <Form.Group controlId={`endLogradouro${index}`}>
                           <Form.Control
                             type="text"
@@ -343,11 +233,11 @@ const EditarUsuario = () => {
                             name="logradouro"
                             value={endereco.logradouro}
                             onChange={(e) => handleEnderecoChange(index, e)}
-                            required
+                            required // Logradouro obrigatório
                           />
                         </Form.Group>
                       </Col>
-                      <Col md={2} className="mb-2">
+                      <Col md={2}>
                         <Form.Group controlId={`endNumero${index}`}>
                           <Form.Control
                             type="text"
@@ -358,7 +248,7 @@ const EditarUsuario = () => {
                           />
                         </Form.Group>
                       </Col>
-                      <Col md={4} className="mb-2">
+                      <Col md={4}>
                         <Form.Group controlId={`endComplemento${index}`}>
                           <Form.Control
                             type="text"
@@ -369,46 +259,7 @@ const EditarUsuario = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
-                    <Row className="mt-1">
-                      <Col md={4} className="mb-2">
-                        <Form.Group controlId={`endBairro${index}`}>
-                          <Form.Control
-                            type="text"
-                            placeholder="Bairro"
-                            name="bairro"
-                            value={endereco.bairro}
-                            onChange={(e) => handleEnderecoChange(index, e)}
-                            required
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md={4} className="mb-2">
-                        <Form.Group controlId={`endMunicipio${index}`}>
-                          <Form.Control
-                            type="text"
-                            placeholder="Município"
-                            name="municipio"
-                            value={endereco.municipio}
-                            onChange={(e) => handleEnderecoChange(index, e)}
-                            required
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md={2} className="mb-2">
-                        <Form.Group controlId={`endUF${index}`}>
-                          <Form.Control
-                            type="text"
-                            placeholder="UF"
-                            name="uf"
-                            maxLength={2}
-                            value={endereco.uf}
-                            onChange={(e) => handleEnderecoChange(index, e)}
-                            required
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md={2} className="mb-2">
+                      <Col md={4}>
                         <Form.Group controlId={`endCEP${index}`}>
                           <Form.Control
                             type="text"
@@ -421,31 +272,68 @@ const EditarUsuario = () => {
                       </Col>
                     </Row>
                     <Row className="mt-2">
-                      <Col className="d-flex justify-content-end">
+                      {/* 💡 CAMPO BAIRRO ADICIONADO E OBRIGATÓRIO */}
+                      <Col md={4}>
+                        <Form.Group controlId={`endBairro${index}`}>
+                          <Form.Control
+                            type="text"
+                            placeholder="Bairro"
+                            name="bairro"
+                            value={endereco.bairro}
+                            onChange={(e) => handleEnderecoChange(index, e)}
+                            required // Bairro obrigatório
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group controlId={`endMunicipio${index}`}>
+                          <Form.Control
+                            type="text"
+                            placeholder="Município"
+                            name="municipio"
+                            value={endereco.municipio}
+                            onChange={(e) => handleEnderecoChange(index, e)}
+                            required // Município obrigatório
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={2}>
+                        <Form.Group controlId={`endUF${index}`}>
+                          <Form.Control
+                            type="text"
+                            placeholder="UF"
+                            name="uf"
+                            maxLength={2}
+                            value={endereco.uf}
+                            onChange={(e) => handleEnderecoChange(index, e)}
+                            required // UF obrigatório
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={2} className="d-flex align-items-end">
                         {enderecos.length > 1 && (
                           <Button
                             variant="outline-danger"
                             onClick={() => removeEndereco(index)}
-                            size="sm"
+                            className="w-100"
                           >
-                            Remover Endereço
+                            Remover
                           </Button>
                         )}
                       </Col>
                     </Row>
                   </Card>
                 ))}
-
                 <hr className="my-4" />
 
                 {/* --- Botões de Ação --- */}
                 <div className="d-grid gap-2">
                   <Button
-                    variant="warning"
+                    variant="success"
                     type="submit"
                     disabled={status.loading}
                   >
-                    {status.loading ? "Atualizando..." : "Atualizar Usuário"}
+                    {status.loading ? "Cadastrando..." : "Cadastrar Usuário"}
                   </Button>
                   <Button
                     variant="outline-secondary"
@@ -465,4 +353,4 @@ const EditarUsuario = () => {
   );
 };
 
-export default EditarUsuario;
+export default NovoUsuario;

@@ -91,23 +91,21 @@ const EditarUsuario = () => {
             },
           ]);
         }
-
+        
         // 💡 LÓGICA DE CARREGAMENTO DE CONTATOS ADICIONADA
         if (data.contatos && data.contatos.length > 0) {
-          setContatos(
-            data.contatos.map((cont) => ({
-              tipo: cont.tipo || "Telefone",
-              valor: cont.valor || "",
-            }))
-          );
+            setContatos(
+                data.contatos.map((cont) => ({
+                    tipo: cont.tipo || "Telefone",
+                    valor: cont.valor || "",
+                }))
+            );
         } else {
-          setContatos([{ tipo: "Telefone", valor: "" }]);
+            setContatos([{ tipo: "Telefone", valor: "" }]);
         }
+
       } catch (error) {
-        console.error(
-          "Erro ao carregar dados do usuário",
-          error.response || error
-        );
+        console.error("Erro ao carregar dados do usuário", error.response || error);
         setStatus({
           loading: false,
           error:
@@ -157,7 +155,7 @@ const EditarUsuario = () => {
     const novosEnderecos = enderecos.filter((_, i) => i !== index);
     setEnderecos(novosEnderecos);
   };
-
+  
   // 💡 HANDLERS PARA CONTATOS RE-ADICIONADOS
   const handleContatoChange = (index, e) => {
     const novosContatos = contatos.map((contato, i) => {
@@ -190,7 +188,7 @@ const EditarUsuario = () => {
         (addr) => addr.logradouro && addr.municipio && addr.uf && addr.bairro
       ),
       // 💡 FILTRO DE CONTATOS RE-ADICIONADO
-      contatos: contatos.filter((cont) => cont.valor),
+      contatos: contatos.filter((cont) => cont.valor), 
     };
 
     // Nova Validação Front-end: Garante que haja pelo menos 1 endereço completo
@@ -206,10 +204,10 @@ const EditarUsuario = () => {
 
     // Validação da Senha
     if (usuario.senha === "") {
-      // Remove a propriedade senha do payload se estiver vazia (para não sobrescrever no backend)
-      delete payload.senha;
+        // Remove a propriedade senha do payload se estiver vazia (para não sobrescrever no backend)
+        delete payload.senha; 
     }
-
+    
     try {
       // 4. Usa api.put para o endpoint de edição
       const response = await api.put(`/usuario/${id}`, payload);
@@ -302,6 +300,7 @@ const EditarUsuario = () => {
                       value={usuario.cpf}
                       onChange={handleUsuarioChange}
                       required
+                      disabled // CPF desabilitado
                     />
                   </Form.Group>
                 </Row>
@@ -326,12 +325,33 @@ const EditarUsuario = () => {
                       required
                     />
                   </Form.Group>
+                  <Form.Group as={Col} controlId="formSenha">
+                    <Form.Label className="sr-only">Nova Senha (opcional)</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Nova senha ****** (Deixe vazio para manter a anterior)"
+                      name="senha"
+                      value={usuario.senha}
+                      onChange={handleUsuarioChange}
+                      required={false}
+                    />
+                  </Form.Group>
                 </Row>
 
                 <hr className="my-4" />
 
                 {/* --- Seção 2: Endereços --- */}
-                <h3>Endereço</h3>
+                <h3>
+                  Endereços ({enderecos.length})
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={addEndereco}
+                    className="ms-3"
+                  >
+                    + Adicionar Endereço
+                  </Button>
+                </h3>
                 {enderecos.map((endereco, index) => (
                   <Card key={index} className="mb-3 p-3 bg-light">
                     <Row>
@@ -438,6 +458,63 @@ const EditarUsuario = () => {
 
                 <hr className="my-4" />
 
+                {/* --- Seção 3: Contatos --- */}
+                <h3>
+                  Contatos ({contatos.length})
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={addContato}
+                    className="ms-3"
+                  >
+                    + Adicionar Contato
+                  </Button>
+                </h3>
+                {contatos.map((contato, index) => (
+                  <Card key={index} className="mb-3 p-3 bg-light">
+                    <Row>
+                      <Col md={4}>
+                        <Form.Group controlId={`contatoTipo${index}`}>
+                          <Form.Select
+                            name="tipo"
+                            value={contato.tipo}
+                            onChange={(e) => handleContatoChange(index, e)}
+                          >
+                            <option>Telefone</option>
+                            <option>Celular</option>
+                            <option>Email</option>
+                          </Form.Select>
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group controlId={`contatoValor${index}`}>
+                          <Form.Control
+                            type="text"
+                            placeholder="Valor do Contato"
+                            name="valor"
+                            value={contato.valor}
+                            onChange={(e) => handleContatoChange(index, e)}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={2} className="d-flex align-items-center">
+                        {contatos.length > 1 && (
+                          <Button
+                            variant="outline-danger"
+                            onClick={() => removeContato(index)}
+                            size="sm"
+                            className="w-100"
+                          >
+                            Remover
+                          </Button>
+                        )}
+                      </Col>
+                    </Row>
+                  </Card>
+                ))}
+
+                <hr className="my-4" />
+                
                 {/* --- Botões de Ação --- */}
                 <div className="d-grid gap-2">
                   <Button

@@ -68,19 +68,20 @@ const Usuario = () => {
   };
 
   const excluirUsuario = async (id) => {
-    try {
-      console.log("excluindo", id);
-      const respostaConfirm = confirm("Confirma a exclusão do usuário?");
-      console.log("respostaConfirm", respostaConfirm);
+    try{
+      console.log('excluindo', id)
+      const respostaConfirm = confirm("Confirma a exclusão do usuário?")
+      console.log('respostaConfirm', respostaConfirm)
       if (respostaConfirm) {
         await api.delete(`/usuario/${id}`);
-        alert(`Usuário excluído com sucesso.`);
+        alert(`Usuário excluído com sucesso.`)
         buscarUsuarios();
       }
-    } catch (err) {
-      alert(`Usuário não pôde ser excluído (provávelmente já adotou)`);
     }
-  };
+    catch (err) {
+      alert(`Usuário não pôde ser excluído (provávelmente já adotou)`)
+    }
+  }
 
   useEffect(() => {
     // Busca os usuários ao carregar o componente
@@ -231,6 +232,12 @@ const Usuario = () => {
               Nenhum usuário encontrado ou erro ao conectar com a API.
             </p>
           )}
+        </div>
+
+        <div className="mt-4">
+          <Button variant="primary" onClick={buscarUsuarios}>
+            Atualizar Lista
+          </Button>
         </div>
       </Container>
     </>

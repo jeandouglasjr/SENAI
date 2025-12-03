@@ -1,4 +1,3 @@
-// src/pages/EditarUsuario.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
@@ -18,7 +17,6 @@ const EditarUsuario = () => {
   const navigate = useNavigate();
   const [loadingInitial, setLoadingInitial] = useState(true);
 
-  // 2. Estados Principais (Usuário, Endereços, Contatos)
   const [usuario, setUsuario] = useState({
     nome: "",
     email: "",
@@ -39,16 +37,12 @@ const EditarUsuario = () => {
     },
   ]);
 
-  // 💡 ESTADO DE CONTATOS RE-ADICIONADO
-  const [contatos, setContatos] = useState([{ tipo: "Telefone", valor: "" }]);
-
   const [status, setStatus] = useState({
     loading: false,
     error: null,
     success: null,
   });
 
-  // 3. Efeito para carregar os dados do usuário
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
@@ -56,16 +50,14 @@ const EditarUsuario = () => {
         const response = await api.get(`/usuario/${id}`);
         const data = response.data;
 
-        // Atualiza o estado principal do usuário
         setUsuario({
           nome: data.nome || "",
           email: data.email || "",
           cpf: data.cpf || "",
           fone: data.fone || "",
-          senha: "", // Não preencher o campo de senha
+          senha: "",
         });
 
-        // Mapeia e atualiza Endereços
         if (data.enderecos && data.enderecos.length > 0) {
           setEnderecos(
             data.enderecos.map((end) => ({
@@ -90,18 +82,6 @@ const EditarUsuario = () => {
               bairro: "",
             },
           ]);
-        }
-
-        // 💡 LÓGICA DE CARREGAMENTO DE CONTATOS ADICIONADA
-        if (data.contatos && data.contatos.length > 0) {
-          setContatos(
-            data.contatos.map((cont) => ({
-              tipo: cont.tipo || "Telefone",
-              valor: cont.valor || "",
-            }))
-          );
-        } else {
-          setContatos([{ tipo: "Telefone", valor: "" }]);
         }
       } catch (error) {
         console.error(
@@ -158,26 +138,6 @@ const EditarUsuario = () => {
     setEnderecos(novosEnderecos);
   };
 
-  // 💡 HANDLERS PARA CONTATOS RE-ADICIONADOS
-  const handleContatoChange = (index, e) => {
-    const novosContatos = contatos.map((contato, i) => {
-      if (i === index) {
-        return { ...contato, [e.target.name]: e.target.value };
-      }
-      return contato;
-    });
-    setContatos(novosContatos);
-  };
-
-  const addContato = () => {
-    setContatos([...contatos, { tipo: "Telefone", valor: "" }]);
-  };
-
-  const removeContato = (index) => {
-    const novosContatos = contatos.filter((_, i) => i !== index);
-    setContatos(novosContatos);
-  };
-
   // --- Handler de Submissão ---
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,8 +149,6 @@ const EditarUsuario = () => {
       enderecos: enderecos.filter(
         (addr) => addr.logradouro && addr.municipio && addr.uf && addr.bairro
       ),
-      // 💡 FILTRO DE CONTATOS RE-ADICIONADO
-      contatos: contatos.filter((cont) => cont.valor),
     };
 
     // Nova Validação Front-end: Garante que haja pelo menos 1 endereço completo
@@ -299,6 +257,7 @@ const EditarUsuario = () => {
                       type="text"
                       placeholder="CPF 000.000.000-00"
                       name="cpf"
+                      // CORRIGIDO: Adicionado value para exibir o CPF carregado, mesmo desabilitado
                       value={usuario.cpf}
                       onChange={handleUsuarioChange}
                       required
@@ -326,12 +285,35 @@ const EditarUsuario = () => {
                       required
                     />
                   </Form.Group>
+                  <Form.Group as={Col} controlId="formSenha">
+                    <Form.Label className="sr-only">
+                      Nova Senha (opcional)
+                    </Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Nova senha ****** (Deixe vazio para manter a anterior)"
+                      name="senha"
+                      value={usuario.senha}
+                      onChange={handleUsuarioChange}
+                      required={false}
+                    />
+                  </Form.Group>
                 </Row>
 
                 <hr className="my-4" />
 
                 {/* --- Seção 2: Endereços --- */}
-                <h3>Endereço</h3>
+                <h3>
+                  Endereços ({enderecos.length})
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={addEndereco}
+                    className="ms-3"
+                  >
+                    + Adicionar Endereço
+                  </Button>
+                </h3>
                 {enderecos.map((endereco, index) => (
                   <Card key={index} className="mb-3 p-3 bg-light">
                     <Row>
@@ -377,6 +359,7 @@ const EditarUsuario = () => {
                             type="text"
                             placeholder="Bairro"
                             name="bairro"
+                            // CORRIGIDO: Adicionado value
                             value={endereco.bairro}
                             onChange={(e) => handleEnderecoChange(index, e)}
                             required
@@ -389,6 +372,7 @@ const EditarUsuario = () => {
                             type="text"
                             placeholder="Município"
                             name="municipio"
+                            // CORRIGIDO: Adicionado value
                             value={endereco.municipio}
                             onChange={(e) => handleEnderecoChange(index, e)}
                             required

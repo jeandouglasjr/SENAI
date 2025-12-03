@@ -62,9 +62,6 @@ const Animal = () => {
         data_cadastro: animal.data_cadastro
           ? new Date(animal.data_cadastro).toLocaleDateString()
           : "N/A", // 3. O campo 'nascimento' não precisa de formatação de data para a tabela, // mas manteremos o valor original (string ISO) para o filtro funcionar corretamente
-        updatedAt: animal.updatedAt
-          ? new Date(animal.updatedAt).toLocaleDateString()
-          : "N/A",
       }));
       setAnimais(animaisFormatados);
     } catch (error) {
@@ -102,8 +99,7 @@ const Animal = () => {
       { key: "raca", label: "Raça" },
       { key: "idade", label: "Idade" }, // <-- MUDANÇA AQUI: Usa 'idade' (o resultado do cálculo)
       { key: "disponivel", label: "Disponível" },
-      { key: "data_cadastro", label: "Data de Cadastro" },
-      { key: "updatedAt", label: "Última Atualização" },
+      { key: "data_cadastro", label: "Criado Em" },
     ],
     []
   );
@@ -243,6 +239,7 @@ const Animal = () => {
                       <Button
                         variant="danger"
                         size="sm"
+                        // Adicionar lógica de exclusão aqui
                         onClick={() => excluirAnimal(animal.id)}
                       >
                         Excluir

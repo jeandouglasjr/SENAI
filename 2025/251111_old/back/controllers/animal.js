@@ -1,0 +1,125 @@
+import { Animal } from "../models/Animal.js";
+
+async function listar(_, res) {
+  try {
+    const animal = await Animal.findAll();
+    return res.status(200).send({ mensagem: animal });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+async function listarPeloId(req, res) {
+  if (isNaN(id)) {
+    return res.status(400).send({ mensagem: "ID inválido" });
+  }
+  try {
+    const { id } = req.params;
+    // Buscar dado pela chave primaria (primary key ou pk)
+    const animal = await Animal.findByPk(id);
+    res.status(200).send({ animal });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+async function excluir(req, res) {
+  try {
+    const { id } = req.params;
+    // DELETE = destroy
+    await Animal.destroy({ where: { id } });
+    res.status(204).send({ mensagem: "Animal excluido com sucesso" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ mensagem: "Erro interno" });
+  }
+}
+
+// CRIAR DADOS = create
+async function criar(req, res) {
+  try {
+    const {
+      nome,
+      especie,
+      raca,
+      sexo,
+      nascimento,
+      porte,
+      saude,
+      status,
+      data_resgate,
+    } = req.body;
+    if (
+      !nome ||
+      !especie ||
+      !raca ||
+      !sexo ||
+      !nascimento ||
+      !porte ||
+      !saude ||
+      !status
+    ) {
+      return res
+        .status(400)
+        .send({ mensagem: "Todos os campos são obrigatórios!" });
+    }
+    const animalCriado = await Animal.create({
+      nome,
+      especie,
+      raca,
+      sexo,
+      nascimento,
+      porte,
+      saude,
+      status,
+      data_resgate,
+    });
+    res.status(201).send({ Mensagem: `Animal cadastrado` });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ Mensagem: "Erro ao cadastrar animal" });
+  }
+}
+
+// EDITAR DADOS = update (Com tratamento de associações)
+async function editar(req, res) {
+  const { id } = req.params;
+  // Captura todos os dados, incluindo os arrays enderecos
+  const {
+    nome,
+    especie,
+    raca,
+    sexo,
+    nascimento,
+    porte,
+    saude,
+    status,
+    data_resgate,
+  } = req.body;
+
+  // Inicia a transação. Se algo der errado, tudo é desfeito.
+  const t = await conexao.transaction();
+
+  try {
+    // 1. Editar a tabela principal (ANIMAL)
+    await Animal.update(
+      {
+        nome,
+        especie,
+        raca,
+        sexo,
+        nascimento,
+        porte,
+        saude,
+        status,
+        data_resgate,
+      },
+      { where: { id }, transaction: t }
+    );
+
+    // 3. Confirma a transação (salva tudo no banco)
+    await t.commit();
+
+export { listar, listarPeloId, excluir, criar, atualizar };

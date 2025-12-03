@@ -39,4 +39,4 @@ try {
   console.log("Erro na conexão");
 }
 const port = process.env.PORT;
-app.listen(port, () => console.log(`http://localhost:${port}`));
+app.listen(port, () => console.log(`Acesse > http://localhost:${port}`));

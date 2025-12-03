@@ -62,29 +62,11 @@ const Animal = () => {
         data_cadastro: animal.data_cadastro
           ? new Date(animal.data_cadastro).toLocaleDateString()
           : "N/A", // 3. O campo 'nascimento' não precisa de formatação de data para a tabela, // mas manteremos o valor original (string ISO) para o filtro funcionar corretamente
-        updatedAt: animal.updatedAt
-          ? new Date(animal.updatedAt).toLocaleDateString()
-          : "N/A",
       }));
       setAnimais(animaisFormatados);
     } catch (error) {
       console.error("Erro ao buscar animais", error);
       alert("Falha ao buscar a lista de animais. Verifique sua autenticação.");
-    }
-  };
-
-  const excluirAnimal = async (id) => {
-    try {
-      console.log("excluindo", id);
-      const respostaConfirm = confirm("Confirma a exclusão do animal?");
-      console.log("respostaConfirm", respostaConfirm);
-      if (respostaConfirm) {
-        await api.delete(`/animal/${id}`);
-        alert(`Animal excluído com sucesso.`);
-        buscarUsuarios();
-      }
-    } catch (err) {
-      alert(`Animal não pôde ser excluído (provávelmente já adotado)`);
     }
   };
 
@@ -102,8 +84,7 @@ const Animal = () => {
       { key: "raca", label: "Raça" },
       { key: "idade", label: "Idade" }, // <-- MUDANÇA AQUI: Usa 'idade' (o resultado do cálculo)
       { key: "disponivel", label: "Disponível" },
-      { key: "data_cadastro", label: "Data de Cadastro" },
-      { key: "updatedAt", label: "Última Atualização" },
+      { key: "data_cadastro", label: "Criado Em" },
     ],
     []
   );
@@ -230,22 +211,13 @@ const Animal = () => {
                         )}
                       </td>
                     ))}
-                    <td className="text-center">
-                      <Button
-                        variant="warning"
-                        size="sm"
-                        as={Link}
-                        to={`/animal/editar/${animal.id}`}
-                        className="me-2"
-                      >
-                        Editar
+                    <td>
+                      {/* Botões de Ação */}
+                      <Button variant="info" size="sm" className="me-2">
+                        Detalhes
                       </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => excluirAnimal(animal.id)}
-                      >
-                        Excluir
+                      <Button variant="danger" size="sm">
+                        Adotado
                       </Button>
                     </td>
                   </tr>
