@@ -18,7 +18,7 @@ const EditarUsuario = () => {
   const navigate = useNavigate();
   const [loadingInitial, setLoadingInitial] = useState(true);
 
-  // 2. Estados Principais (Usuário, Endereços, Contatos)
+  // 2. Estados Principais (Usuário, Endereços)
   const [usuario, setUsuario] = useState({
     nome: "",
     email: "",
@@ -38,9 +38,6 @@ const EditarUsuario = () => {
       bairro: "",
     },
   ]);
-
-  // 💡 ESTADO DE CONTATOS RE-ADICIONADO
-  const [contatos, setContatos] = useState([{ tipo: "Telefone", valor: "" }]);
 
   const [status, setStatus] = useState({
     loading: false,
@@ -91,29 +88,6 @@ const EditarUsuario = () => {
             },
           ]);
         }
-
-        // 💡 LÓGICA DE CARREGAMENTO DE CONTATOS ADICIONADA
-        if (data.contatos && data.contatos.length > 0) {
-          setContatos(
-            data.contatos.map((cont) => ({
-              tipo: cont.tipo || "Telefone",
-              valor: cont.valor || "",
-            }))
-          );
-        } else {
-          setContatos([{ tipo: "Telefone", valor: "" }]);
-        }
-      } catch (error) {
-        console.error(
-          "Erro ao carregar dados do usuário",
-          error.response || error
-        );
-        setStatus({
-          loading: false,
-          error:
-            "Erro ao carregar dados do usuário. ID inválido ou problema de conexão.",
-          success: null,
-        });
       } finally {
         setLoadingInitial(false);
       }
@@ -158,26 +132,6 @@ const EditarUsuario = () => {
     setEnderecos(novosEnderecos);
   };
 
-  // 💡 HANDLERS PARA CONTATOS RE-ADICIONADOS
-  const handleContatoChange = (index, e) => {
-    const novosContatos = contatos.map((contato, i) => {
-      if (i === index) {
-        return { ...contato, [e.target.name]: e.target.value };
-      }
-      return contato;
-    });
-    setContatos(novosContatos);
-  };
-
-  const addContato = () => {
-    setContatos([...contatos, { tipo: "Telefone", valor: "" }]);
-  };
-
-  const removeContato = (index) => {
-    const novosContatos = contatos.filter((_, i) => i !== index);
-    setContatos(novosContatos);
-  };
-
   // --- Handler de Submissão ---
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,8 +143,6 @@ const EditarUsuario = () => {
       enderecos: enderecos.filter(
         (addr) => addr.logradouro && addr.municipio && addr.uf && addr.bairro
       ),
-      // 💡 FILTRO DE CONTATOS RE-ADICIONADO
-      contatos: contatos.filter((cont) => cont.valor),
     };
 
     // Nova Validação Front-end: Garante que haja pelo menos 1 endereço completo

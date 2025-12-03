@@ -6,13 +6,13 @@ import {
   listarPeloId,
   excluir,
   criar,
-  atualizar,
+  editar,
 } from "../controllers/animal.js";
 
 routerAnimal.get("/animal", listar);
 routerAnimal.get("/animal/:id", listarPeloId);
 routerAnimal.delete("/animal/:id", excluir);
 routerAnimal.post("/animal", criar);
-routerAnimal.put("/animal/:id", atualizar);
+routerAnimal.put("/animal/:id", editar);
 
 export { routerAnimal };

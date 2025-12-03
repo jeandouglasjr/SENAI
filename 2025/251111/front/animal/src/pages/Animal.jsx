@@ -100,7 +100,7 @@ const Animal = () => {
       { key: "nome", label: "Nome" },
       { key: "especie", label: "Espécie" },
       { key: "raca", label: "Raça" },
-      { key: "idade", label: "Idade" }, // <-- MUDANÇA AQUI: Usa 'idade' (o resultado do cálculo)
+      { key: "idade", label: "Idade" },
       { key: "disponivel", label: "Disponível" },
       { key: "data_cadastro", label: "Data de Cadastro" },
       { key: "updatedAt", label: "Última Atualização" },

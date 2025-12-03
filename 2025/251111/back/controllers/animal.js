@@ -75,7 +75,7 @@ async function criar(req, res) {
 }
 
 // ATUALIZAR DADOS = update
-async function atualizar(req, res) {
+async function editar(req, res) {
   try {
     const { nome, especie, raca, sexo, nascimento, porte, saude, status, data_resgate } =
       req.body;
@@ -106,4 +106,4 @@ async function atualizar(req, res) {
   }
 }
 
-export { listar, listarPeloId, excluir, criar, atualizar };
+export { listar, listarPeloId, excluir, criar, editar };
