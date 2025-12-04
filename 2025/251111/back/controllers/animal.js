@@ -11,11 +11,11 @@ async function listar(_, res) {
 }
 
 async function listarPeloId(req, res) {
-  if (isNaN(id)) {
-    return res.status(400).send({ mensagem: "ID inválido" });
-  }
   try {
     const { id } = req.params;
+    if (isNaN(id)) {
+      return res.status(400).send({ mensagem: "ID inválido" });
+    }
     // Buscar dado pela chave primaria (primary key ou pk)
     const animal = await Animal.findByPk(id);
     res.status(200).send({ animal });
@@ -79,7 +79,8 @@ async function editar(req, res) {
   try {
     const { nome, especie, raca, sexo, nascimento, porte, saude, status, data_resgate } =
       req.body;
-    const { id } = req.params;
+    // const { id } = req.params;
+    console.log(req.body);
     if (
       !id ||
       !nome ||

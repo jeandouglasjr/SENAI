@@ -119,6 +119,7 @@ async function editar(req, res) {
   // Captura todos os dados, incluindo os arrays enderecos
   const { nome, email, cpf, fone, senha, enderecos } = req.body;
 
+  console.log(req.body);
   // Inicia a transação. Se algo der errado, tudo é desfeito.
   const t = await conexao.transaction();
 

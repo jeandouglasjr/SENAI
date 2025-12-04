@@ -9,9 +9,9 @@ import {
   Alert,
   Card,
   Spinner,
-  InputGroup, // Adicionado para formatações visuais
+  InputGroup,
 } from "react-bootstrap";
-import api from "../services/api"; // Certifique-se de que o caminho está correto
+import api from "../services/api"; // Mantendo o import da sua API
 
 const EditarAnimal = () => {
   const { id } = useParams();
@@ -27,6 +27,7 @@ const EditarAnimal = () => {
     nascimento: "", // data (DD/MM/AAAA)
     porte: "",
     saude: "",
+    status: "",
     data_resgate: "", // data (DD/MM/AAAA)
   });
 
@@ -36,16 +37,13 @@ const EditarAnimal = () => {
     success: null,
   });
 
-  // 2. Efeito para carregar os dados do Animal
   useEffect(() => {
     const fetchAnimal = async () => {
       try {
         setLoadingInitial(true);
-        // Ajuste o endpoint para a sua API de Animal
         const response = await api.get(`/animal/${id}`);
-        const data = response.data;
+        const data = response.data?.animal;
 
-        // Atualiza o estado principal do Animal
         setAnimal({
           nome: data.nome || "",
           especie: data.especie || "",
@@ -54,6 +52,7 @@ const EditarAnimal = () => {
           nascimento: data.nascimento || "", // Assumindo que a API retorna como string
           porte: data.porte || "",
           saude: data.saude || "",
+          status: data.status || "",
           data_resgate: data.data_resgate || "", // Assumindo que a API retorna como string
         });
       } catch (error) {
@@ -75,8 +74,7 @@ const EditarAnimal = () => {
     fetchAnimal();
   }, [id]);
 
-  // 3. Handler de Alteração do Formulário Principal
-  const handlAnimalChange = (e) => {
+  const handleAnimalChange = (e) => {
     setAnimal({ ...animal, [e.target.name]: e.target.value });
   };
 
@@ -85,12 +83,10 @@ const EditarAnimal = () => {
     e.preventDefault();
     setStatus({ loading: true, error: null, success: null });
 
-    // O payload é o próprio objeto animal, já que não há sub-arrays como endereços.
     const payload = {
       ...animal,
       // Assegure que as datas no payload estejam no formato correto para o backend
-      // Se a sua API espera um formato ISO (AAAA-MM-DD), você precisará de uma função de conversão.
-      // Manteremos como string por enquanto, assumindo que a API aceita a string do campo.
+      // (Mantido como string, conforme seu código original)
     };
 
     try {
@@ -173,7 +169,7 @@ const EditarAnimal = () => {
                       placeholder="Nome do Animal"
                       name="nome"
                       value={animal.nome}
-                      onChange={handleAnimalChange}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
                     />
                   </Form.Group>
@@ -182,7 +178,7 @@ const EditarAnimal = () => {
                     <Form.Select
                       name="especie"
                       value={animal.especie}
-                      onChange={handleAnimalChange}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
                     >
                       <option value="">Selecione a Espécie</option>
@@ -201,7 +197,7 @@ const EditarAnimal = () => {
                       placeholder="Ex: Labrador, Siamês"
                       name="raca"
                       value={animal.raca}
-                      onChange={handleAnimalChange}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
                     />
                   </Form.Group>
@@ -210,7 +206,7 @@ const EditarAnimal = () => {
                     <Form.Select
                       name="porte"
                       value={animal.porte}
-                      onChange={handleAnimalChange}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
                     >
                       <option value="">Selecione o Porte</option>
@@ -235,7 +231,7 @@ const EditarAnimal = () => {
                         placeholder="DD/MM/AAAA"
                         name="nascimento"
                         value={animal.nascimento}
-                        onChange={handleAnimalChange}
+                        onChange={handleAnimalChange} // CORRIGIDO AQUI
                       />
                     </InputGroup>
                   </Form.Group>
@@ -248,7 +244,7 @@ const EditarAnimal = () => {
                         placeholder="DD/MM/AAAA"
                         name="data_resgate"
                         value={animal.data_resgate}
-                        onChange={handleAnimalChange}
+                        onChange={handleAnimalChange} // CORRIGIDO AQUI
                         required
                       />
                     </InputGroup>
@@ -261,7 +257,7 @@ const EditarAnimal = () => {
                     <Form.Select
                       name="sexo"
                       value={animal.sexo}
-                      onChange={handleAnimalChange}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
                     >
                       <option value="">Selecione o Sexo</option>
@@ -278,7 +274,7 @@ const EditarAnimal = () => {
                       placeholder="Vacinas, Castração, Problemas de Saúde, etc."
                       name="saude"
                       value={animal.saude}
-                      onChange={handleAnimalChange}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
                     />
                   </Form.Group>
                 </Row>
@@ -313,4 +309,6 @@ const EditarAnimal = () => {
   );
 };
 
-export default EditarAnimal;
+// Wrapper App para exportação
+const App = () => <EditarAnimal />;
+export default App;

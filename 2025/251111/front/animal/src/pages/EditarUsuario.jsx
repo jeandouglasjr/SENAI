@@ -51,7 +51,8 @@ const EditarUsuario = () => {
       try {
         setLoadingInitial(true);
         const response = await api.get(`/usuario/${id}`);
-        const data = response.data;
+        const data = response.data?.usuario;
+    console.log(data);
 
         // Atualiza o estado principal do usuário
         setUsuario({
@@ -61,11 +62,11 @@ const EditarUsuario = () => {
           fone: data.fone || "",
           senha: "", // Não preencher o campo de senha
         });
-
+        console.log(data?.usuario?.endereco);
         // Mapeia e atualiza Endereços
-        if (data.enderecos && data.enderecos.length > 0) {
+        if (data?.usuario.endereco && data?.usuario?.endereco.length > 0) {
           setEnderecos(
-            data.enderecos.map((end) => ({
+            data?.usuario.enderecos.map((end) => ({
               logradouro: end.logradouro || "",
               numero: end.numero || "",
               complemento: end.complemento || "",
