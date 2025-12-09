@@ -74,12 +74,12 @@ async function criar(req, res) {
   }
 }
 
-// ATUALIZAR DADOS = update
+// ATUALIZAR DADOS = update substituir aqui
 async function editar(req, res) {
   try {
     const { nome, especie, raca, sexo, nascimento, porte, saude, status, data_resgate } =
       req.body;
-    // const { id } = req.params;
+    const { id } = req.params;
     console.log(req.body);
     if (
       !id ||

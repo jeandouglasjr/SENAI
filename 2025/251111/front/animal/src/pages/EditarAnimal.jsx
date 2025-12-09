@@ -49,11 +49,11 @@ const EditarAnimal = () => {
           especie: data.especie || "",
           raca: data.raca || "",
           sexo: data.sexo || "",
-          nascimento: data.nascimento || "", // Assumindo que a API retorna como string
+          nascimento: data.nascimento || "",
           porte: data.porte || "",
           saude: data.saude || "",
           status: data.status || "",
-          data_resgate: data.data_resgate || "", // Assumindo que a API retorna como string
+          data_resgate: data.data_resgate || "",
         });
       } catch (error) {
         console.error(
@@ -84,9 +84,7 @@ const EditarAnimal = () => {
     setStatus({ loading: true, error: null, success: null });
 
     const payload = {
-      ...animal,
-      // Assegure que as datas no payload estejam no formato correto para o backend
-      // (Mantido como string, conforme seu código original)
+      ...animal
     };
 
     try {
@@ -203,17 +201,14 @@ const EditarAnimal = () => {
                   </Form.Group>
                   <Form.Group as={Col} controlId="formPorte">
                     <Form.Label>Porte</Form.Label>
-                    <Form.Select
+                    <Form.Control
+                      type="text"
+                      placeholder="Ex: Pequeno, Médio, Grande"
                       name="porte"
                       value={animal.porte}
                       onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
-                    >
-                      <option value="">Selecione o Porte</option>
-                      <option value="Pequeno">Pequeno</option>
-                      <option value="Medio">Médio</option>
-                      <option value="Grande">Grande</option>
-                    </Form.Select>
+                    />
                   </Form.Group>
                 </Row>
 
@@ -250,21 +245,31 @@ const EditarAnimal = () => {
                     </InputGroup>
                   </Form.Group>
                 </Row>
-
                 <Row className="mb-4">
+
+                <Form.Group as={Col} controlId="formPorte">
+                    <Form.Label>Porte</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Ex: Pequeno, Médio, Grande"
+                      name="porte"
+                      value={animal.porte}
+                      onChange={handleAnimalChange} // CORRIGIDO AQUI
+                      required
+                    />
+                  </Form.Group>
+
                   <Form.Group as={Col} md={6} controlId="formSexo">
                     <Form.Label>Sexo</Form.Label>
-                    <Form.Select
+                    <Form.Control
+                      type="text"
+                      placeholder="Ex. Macho, Fêmea"
                       name="sexo"
                       value={animal.sexo}
                       onChange={handleAnimalChange} // CORRIGIDO AQUI
                       required
                     >
-                      <option value="">Selecione o Sexo</option>
-                      <option value="Macho">Macho</option>
-                      <option value="Femea">Fêmea</option>
-                      <option value="NaoInformado">Não Informado</option>
-                    </Form.Select>
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} md={6} controlId="formSaude">
                     <Form.Label>Status de Saúde</Form.Label>

@@ -1,10 +1,6 @@
 import { conexao } from "../database.js"; // IMPORTANTE: Sua instância Sequelize
 import { Usuario, Endereco } from "../models/index.js"; // Assumindo que você tem um index.js para exportar os modelos
 
-// -----------------------------------------------------------------------
-// Funções de Listagem e Exclusão (Mantidas)
-// -----------------------------------------------------------------------
-
 async function listar(_, res) {
   try {
     const usuarios = await Usuario.findAll({
@@ -109,10 +105,6 @@ async function criar(req, res) {
   }
 }
 
-// -----------------------------------------------------------------------
-// Função Editar (Mantida)
-// -----------------------------------------------------------------------
-
 // EDITAR DADOS = update (Com tratamento de associações)
 async function editar(req, res) {
   const { id } = req.params;
@@ -164,9 +156,5 @@ async function editar(req, res) {
       .send({ mensagem: "Erro interno ao editar usuário completo." });
   }
 }
-
-// -----------------------------------------------------------------------
-// Exportação
-// -----------------------------------------------------------------------
 
 export { listar, listarPeloId, excluir, criar, editar };

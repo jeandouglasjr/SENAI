@@ -50,7 +50,6 @@ const rotas = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      // 💡 Adicione a rota de Login
       {
         path: "/usuario",
         element: <Usuario />,

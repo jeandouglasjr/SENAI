@@ -61,6 +61,21 @@ const HistoricoAdocao = () => {
     }
   };
 
+  const excluirHistorico = async (id) => {
+    try {
+      console.log("excluindo", id);
+      const respostaConfirm = confirm("Confirma a exclusão do histórico?");
+      console.log("respostaConfirm", respostaConfirm);
+      if (respostaConfirm) {
+        await api.delete(`/historico_adocao/${id}`);
+        alert(`Histórico excluído com sucesso.`);
+        buscarUsuarios();
+      }
+    } catch (err) {
+      alert(`Histórico não pôde ser excluído`);
+    }
+  };
+
   useEffect(() => {
     buscarHistoricos();
   }, []);
@@ -210,20 +225,25 @@ const HistoricoAdocao = () => {
                           )}
                         </td>
                       ))}
-                      <td className="text-center">
-                        <Button
-                          variant="warning"
-                          size="sm"
-                          as={Link}
-                          to={`/historico_adocao/editar/${hist.id}`}
-                          className="me-2"
-                        >
-                          Editar
-                        </Button>
-                        <Button variant="danger" size="sm">
-                          Excluir
-                        </Button>
-                      </td>
+                    <td className="text-center">
+                      <Button
+                        variant="warning"
+                        size="sm"
+                        as={Link}
+                        to={`/historico_adocao/editar/${historicos.id}`}
+                        className="me-2"
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        // Adicionar lógica de exclusão aqui
+                        onClick={() => excluirHistorico(historicos.id)}
+                      >
+                        Excluir
+                      </Button>
+                    </td>
                     </tr>
                   ))}
                 </tbody>
